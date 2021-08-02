@@ -1,2 +1,2 @@
-# Milestone02_K17
-Repo milestone chat bot line
+# BOT PERCAKAPAN EMBOT
+Kelompok Empati-ers (17)
