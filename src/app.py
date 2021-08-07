@@ -48,14 +48,16 @@ def handle_message(event):
     user_profile = line_bot_api.get_profile(user_id=user_id)
 
     time_now = datetime.now()
-    pesan_sql = '({}, {}, {}-{}-{} {}:{}, {}, {})'.format(
+    pesan_sql = '({}, {}, {}, {}-{}-{} {}:{}, {})'.format(
                 user_profile.display_name, user_id, int(datetime.now().timestamp()),
                 time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
                 event.message.text)
 
     #psql_cur.execute("INSERT INTO percakapan VALUES " + pesan_sql + ';')
+    psql_cur.execute('Select version();')
+    version_response = psql_cur.fetchone()
     sent_msg = TextSendMessage(text=pesan_sql)
-    line_bot_api.reply_message(event.reply_token, sent_msg)
+    line_bot_api.reply_message(event.reply_token, [sent_msg, TextSendMessage(text=version_response)])
 
 
 import os
