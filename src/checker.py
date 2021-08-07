@@ -3,5 +3,4 @@ def checker(text, list):
         if list[i] in text:
             return True
     return False
-# contoh penggunaan`
 

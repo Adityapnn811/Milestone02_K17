@@ -8,7 +8,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
-from parser import *
+from checker import *
 
 app = Flask(__name__)
 
@@ -37,8 +37,31 @@ def callback():
 def handle_message(event):
     message = event.message.text.lower()
     list_sapaan = ["halo", "halo", "hi", "hai"]
+    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
+    list_response = ["iya", "tidak"]
     if checker(message, list_sapaan):
-        reply_msg = "Hai aku Kiran, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
+        reply_msg = "Hai aku Kirana, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    elif checker(message, list_katakunci):
+        if "stress" in message:
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+        reply_msg = "Apakah jawabanku memabantu kamu? Ketik 'iya' jika membantu"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    elif checker(message, list_response):
+        if "iya" in message:
+            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+        else:
+            reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+    else:
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin balbalbal"
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
 
