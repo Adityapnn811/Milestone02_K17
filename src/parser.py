@@ -1,15 +1,7 @@
-def parsermsg(text, kata_kunci):
-    arr_text = text.split(' ')
-    for word in arr_text:
-        if word == kata_kunci:
-            return word
+def checker(text, list):
+    for i in range(len(list)):
+        if list[i] in text:
+            return True
+    return False
+# contoh penggunaan`
 
-# contoh penggunaan
-'''
-text = "Aku stress banget nih"
-kata_kunci = parsermsg(text, "makan")
-if kata_kunci == "stress":
-    print("Ini nih biar lu ga stress")
-else:
-    print("Ngomong apaan sih lu")
-'''

@@ -8,6 +8,8 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+from parser import *
+
 app = Flask(__name__)
 
 # Channel Access Token
@@ -33,8 +35,13 @@ def callback():
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token, message)
+    message = event.message.text.lower()
+    list_sapaan = ["halo", "halo", "hi", "hai"]
+    if checker(message, list_sapaan):
+        reply_msg = "Hai aku Kiran, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+
 
 import os
 if __name__ == "__main__":
