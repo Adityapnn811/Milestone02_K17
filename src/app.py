@@ -62,8 +62,6 @@ def handle_message(event):
 
 import os
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
     psql_conn = psycopg2.connect(host=psql_host,
                                  database=psql_database, 
                                  user=psql_user,
@@ -71,3 +69,6 @@ if __name__ == "__main__":
                                  port=psql_port)
     psql_cur = psql_conn.cursor()
     psql_cur.execute('CREATE TABLE IF NOT EXISTS percakapan (nama_user text, id_user text, waktu_epoch integer, waktu text, pesan text);')
+
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
