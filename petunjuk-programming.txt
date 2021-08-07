@@ -1,0 +1,36 @@
+
+Untuk menghandle pesan dari user, tambahkan:
+
+@handler.add(MessageEvent, message=tipe message dari user)
+def nama_fungsi_bebas(event):
+	if ...
+
+Tipe message dari user: TextMessage, ImageMessage, VideoMessage, AudioMessage, FileMessage, LocationMessage, StickerMessage
+Cukup 1 untuk tiap tipe message
+Cukup tambah if ... else saja untuk menghandle berbagai kondisi
+
+
+Kode-kode di bawah ini ditaruh di bawah fungsi handler (seperti def nama_fungsi_bebas di atas)
+=== TextMessage ===
+text = event.message.text	# Pesan teks yang dikirim user
+if text == 'contoh kata kunci':
+	# Lakukan sesuatu
+
+# Di dalam # Lakukan sesuatu, balas user sesuai kondisi/kata kunci, caranya:
+pesan_balasan = TextSendMessage(text='Ini pesan balasan')
+line_bot_api.reply_message(event.reply_token, pesan_balasan)
+
+# Kalau ingin membalas dengan beberapa pesan, gunakan (karena .reply_message() cuma bisa digunakan sekali):
+pesan_balasan = TextSendMessage(text='Ini pesan balasan')
+pesan_balasan_2 = TextSendMessage(text='Ini pesan balasan ke-2')
+pesan_balasan_3 = TextSendMessage(text='Ini pesan balasan ke-3')
+line_bot_api.reply_message(event.reply_token, [pesan_balasan, pesan_balasan_2, pesan_balasan_3])
+
+
+# Kalau ingin membalas dengan GAMBAR, gunakan (sebagai contoh):
+url = 'https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_960_720.png'
+balas_gambar = ImageSendMessage(url, url)
+line_bot_api.reply_message(event.reply_token, balas_gambar)
+
+# Kalau ingin mengirim beberapa, caranya seperti kalau membalas dengan pesan teks
+# Sejauh ini, gambar hanya bisa ditaruh di tempat lain (seperti cdn.pixabay.com/), tidak support ditaruh bersama kode di Heroku, tidak support juga ditaruh di Google Drive
