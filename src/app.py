@@ -47,10 +47,9 @@ def handle_message(event):
         if "stress" in message:
             reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
             sent_msg = TextSendMessage(text=reply_msg)
-            line_bot_api.reply_message(event.reply_token, sent_msg)
-        reply_msg = "Apakah jawabanku memabantu kamu? Ketik 'iya' jika membantu"
-        sent_msg = TextSendMessage(text=reply_msg)
-        line_bot_api.reply_message(event.reply_token, sent_msg)
+        reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
+        sent_response = TextSendMessage(text=reply_response)
+        line_bot_api.reply_message(event.reply_token, [sent_response, sent_msg])
     elif checker(message, list_response):
         if "iya" in message:
             reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
