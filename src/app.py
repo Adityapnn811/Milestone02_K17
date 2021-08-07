@@ -9,6 +9,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 from datetime import datetime
+import pytz
 
 app = Flask(__name__)
 
@@ -56,8 +57,8 @@ def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
 
-    time_now = datetime.now()
-    pesan_sql = "('{}', '{}', {}, '{}-{}-{} {}:{}', '{}')".format(
+    time_now = datetime.now(pytz.timezone('Etc/GMT-7'))
+    pesan_sql = "('{}', '{}', {}, '{}-{}-{} {:02}:{:02}', '{}')".format(
                 user_profile.display_name, user_id, int(datetime.now().timestamp()),
                 time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
                 event.message.text)
