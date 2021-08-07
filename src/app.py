@@ -13,6 +13,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 # Heroku PostgreSQL Setups
+psql_riwayatcakap = 'riwayatcakap'
 psql_host = 'ec2-54-196-65-186.compute-1.amazonaws.com'
 psql_database = 'd12jneq73g7u2'
 psql_user = 'aaqgmutpyfxgmx'
@@ -53,11 +54,9 @@ def handle_message(event):
                 time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
                 event.message.text)
 
-    #psql_cur.execute("INSERT INTO percakapan VALUES " + pesan_sql + ';')
-    psql_cur.execute('Select version();')
-    version_response = psql_cur.fetchone()
+    psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ';')
     sent_msg = TextSendMessage(text=pesan_sql)
-    line_bot_api.reply_message(event.reply_token, [sent_msg, TextSendMessage(text=version_response)])
+    line_bot_api.reply_message(event.reply_token, sent_msg)
 
 
 import os
@@ -68,7 +67,5 @@ if __name__ == "__main__":
                                  password=psql_password,
                                  port=psql_port)
     psql_cur = psql_conn.cursor()
-    psql_cur.execute('CREATE TABLE IF NOT EXISTS percakapan (nama_user text, id_user text, waktu_epoch integer, waktu text, pesan text);')
-
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
