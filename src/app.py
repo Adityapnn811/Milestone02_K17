@@ -8,6 +8,8 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 
+from checker import *
+
 app = Flask(__name__)
 
 # Channel Access Token
@@ -15,7 +17,7 @@ line_bot_api = LineBotApi('KBYcJt1ZmbmMnkQM0ZW6uREsAtE7QSARwDrVprACm91i3/zpvlJZV
 # Channel Secret
 handler = WebhookHandler('38cb174b5ffbf238b2b7048c47676654')
 
-# 監聽所有來自 /callback 的 Post Request
+# 監聽所有來自 /callback Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -30,11 +32,39 @@ def callback():
         abort(400)
     return 'OK'
 
-# 處理訊息
+# Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token, message)
+    message = event.message.text.lower()
+    line_bot_api.push_message('Ua68faad875d238f2b77e6f4b1df027ab', TextSendMessage(text='Apa push message nya bisa?')) # Tes kirim ke Alif
+    list_sapaan = ["halo", "halo", "hi", "hai"]
+    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
+    list_response = ["iya", "tidak"]
+    if checker(message, list_sapaan):
+        reply_msg = "Hai aku Kirana, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    elif checker(message, list_katakunci):
+        if "stress" in message:
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+        reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
+        sent_response = TextSendMessage(text=reply_response)
+        line_bot_api.reply_message(event.reply_token, [sent_response, sent_msg])
+    elif checker(message, list_response):
+        if "iya" in message:
+            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+        else:
+            reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+    else:
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+
 
 import os
 if __name__ == "__main__":
