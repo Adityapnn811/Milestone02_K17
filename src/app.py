@@ -57,17 +57,18 @@ def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
 
-    time_now = datetime.now(pytz.timezone('Etc/GMT-7'))
-    pesan_sql = "('{}', '{}', {}, '{}-{}-{} {:02}:{:02}', '{}')".format(
-                user_profile.display_name, user_id, int(datetime.now().timestamp()),
+    try:
+        time_now = datetime.now(pytz.timezone('Etc/GMT-7'))
+        pesan_sql = "('{}', '{}', {}, '{}-{}-{} {:02}:{:02}', '{}')".format(
+                user_profile.display_name.replace("'", "''"), user_id, int(datetime.now().timestamp()),
                 time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
-                event.message.text)
-
-    psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ";")
-    psql_conn.commit()
-    sent_msg = TextSendMessage(text=pesan_sql)
-    line_bot_api.reply_message(event.reply_token, sent_msg)
-
+                event.message.text.replace("'", "''"))
+        psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ";")
+        psql_conn.commit()
+        sent_msg = TextSendMessage(text=pesan_sql)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    except:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Maaf, suatu error terjadi"))
 
 import os
 if __name__ == "__main__":
