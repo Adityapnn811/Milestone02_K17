@@ -54,7 +54,7 @@ def handle_message(event):
                 time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
                 event.message.text)
 
-    psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ';')
+    #psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ';')
     sent_msg = TextSendMessage(text=pesan_sql)
     line_bot_api.reply_message(event.reply_token, sent_msg)
 
