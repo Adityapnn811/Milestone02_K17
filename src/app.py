@@ -36,7 +36,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text.lower()
-    line_bot_api.push_message('Ua68faad875d238f2b77e6f4b1df027ab', TextSendMessage(text=message)) # Tes kirim ke Alif
+    line_bot_api.push_message('Ua68faad875d238f2b77e6f4b1df027ab', TextSendMessage(text='Apa push message nya bisa?')) # Tes kirim ke Alif
     list_sapaan = ["halo", "halo", "hi", "hai"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak"]
@@ -61,7 +61,7 @@ def handle_message(event):
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
-        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin balbalbal"
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
 
