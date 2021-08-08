@@ -55,11 +55,12 @@ def callback():
 @app.route("/admin-chat", methods=['GET'])
 def callback_admin():
     try:
-        json_data = request.json
-        id_user = json_data["id_user"]
-        pesan_admin = json_data["pesan_admin"]
-        sent_msg = TextSendMessage(text=pesan_admin)
-        line_bot_api.push_message(id_user, sent_msg)
+        #json_data = request.json
+        #id_user = json_data["id_user"]
+        #pesan_admin = json_data["pesan_admin"]
+        #sent_msg = TextSendMessage(text=pesan_admin)
+        #line_bot_api.push_message(id_user, sent_msg)
+	line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
     except:
         pass
 

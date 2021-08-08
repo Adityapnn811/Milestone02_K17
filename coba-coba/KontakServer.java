@@ -1,7 +1,11 @@
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+
+
 
 public class KontakServer{
     public static void main(String[] args){
@@ -22,6 +26,10 @@ public class KontakServer{
             conn.setRequestMethod("GET");
             OutputStream os = conn.getOutputStream();
             os.write(pesanJson.getBytes("UTF-8"));
+            //InputStream in = new BufferedInputStream(conn.getInputStream());
+            //String result = IOUtils.toString(in, "UTF-8");
+
+            //System.out.println(result);
             os.close();
         } catch (Exception e) {
             e.printStackTrace();
