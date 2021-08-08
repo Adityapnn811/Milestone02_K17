@@ -35,8 +35,10 @@ def callback():
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    user_id = event.source.user_id
+    user_profile = line_bot_api.get_profile(user_id=user_id)
     message = event.message.text.lower()
-    line_bot_api.push_message('Ua68faad875d238f2b77e6f4b1df027ab', TextSendMessage(text=message)) # Tes kirim ke Alif
+    line_bot_api.push_message('Ua68faad875d238f2b77e6f4b1df027ab', TextSendMessage(text=message+user_profile.display_name)) # Tes kirim ke Alif
     list_sapaan = ["halo", "halo", "hi", "hai"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak"]
