@@ -9,6 +9,7 @@ from linebot.exceptions import (
 from linebot.models import *
 
 from checker import *
+from hubungiAdmin import *
 
 app = Flask(__name__)
 
@@ -32,31 +33,6 @@ def callback():
         abort(400)
     return 'OK'
 
-def sendToAdmin(message,user_id, admin_name):
-    # Message adalah pesan yang akan dikirim ke admin
-    # user_id adalah userID dari line
-    # admin_name adalah nama admin, ada di dict admins
-    admins = {
-        'Alif Yasa' : 'Ua68faad875d238f2b77e6f4b1df027ab'
-    }
-    user_profile = line_bot_api.get_profile(user_id=user_id)
-    # Menurutku message ke Admin dengan message ke user harus berbeda
-    # karena sepertinya lebih baik jika admin tahu detailnya
-    pesan = f"[{user_profile.display_name}]\n\n{message}\n\n[{user_id}]"
-    line_bot_api.push_message(admins[admin_name], TextSendMessage(text=pesan)) # Tes kirim ke Alif
-
-def sendToUser(message, admin_id, recipient_id):
-     # message adalah pesan, bagian akhir message harus ada userID
-     # admin id adalah id dari admin, nantinya akan di check     
-    admins = {
-        'Alif Yasa' : 'Ua68faad875d238f2b77e6f4b1df027ab'
-    }
-    user_profile = line_bot_api.get_profile(user_id=admin_id)
-    if admins[user_profile.display_name] == admin_id:
-        try: 
-            line_bot_api.push_message(recipient_id, TextSendMessage(text=message.strip()))
-        except:
-            abort(400)
 def chatBot(message):
     list_sapaan = ["halo", "halo", "hi", "hai"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
@@ -92,7 +68,6 @@ def handle_message(event):
     sendToAdmin(message, user_id, 'Alif Yasa')
     if message_raw[:3] == "###":
         sendToUser(message_raw[3:-33].strip(), user_id, message_raw[-33:])
-        line_bot_api.reply_message(event.reply_token, f"Sent to {line_bot_api.get_profile(user_id=message_raw[-33:]).display_name}")
     else:
         line_bot_api.reply_message(event.reply_token, chatBot(message))
 
