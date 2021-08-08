@@ -40,6 +40,12 @@ def handle_message(event):
         url = 'https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_960_720.png'
         #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
         line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
+    if msg == 'elephant image': 
+        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
+        url = 'https://cdn.pixabay.com/photo/2018/11/22/18/17/elephant-3832516_1280.jpg'
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
+        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
+    
     elif msg == 'kirim beberapa':
         line_bot_api.reply_message(event.reply_token, [TextSendMessage(text='Keren'), TextSendMessage(text='sekali')])
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Mantap'))
