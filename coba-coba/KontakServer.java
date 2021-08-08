@@ -20,17 +20,26 @@ public class KontakServer{
             URL url = new URL(queryUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(20000);
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setRequestProperty("Content-Type", "application/json; utf-8");
+            conn.setRequestProperty("Accept", "application/json");
+
             conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setRequestMethod("GET");
+            //conn.setDoInput(true);
+            //conn.setRequestMethod("GET");
+            conn.setRequestMethod("POST");
+            conn.connect();
+            //conn.getRequestMethod();
             OutputStream os = conn.getOutputStream();
-            os.write(pesanJson.getBytes("UTF-8"));
+            os.write(pesanJson.getBytes("utf-8"));
+            os.close();
+            //InputStream is = conn.getInputStream();
+            //is.readAllBytes();
+            //is.close();
             //InputStream in = new BufferedInputStream(conn.getInputStream());
             //String result = IOUtils.toString(in, "UTF-8");
 
             //System.out.println(result);
-            os.close();
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
