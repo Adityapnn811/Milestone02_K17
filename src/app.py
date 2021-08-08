@@ -32,13 +32,23 @@ def callback():
         abort(400)
     return 'OK'
 
+def sendToAdmin(message,user_id, admin_name):
+    # Message adalah pesan yang akan dikirim ke admin
+    # user_id adalah userID dari line
+    # admin_name adalah nama admin, ada di dict admins
+    admins = {
+        'Alif' : 'Ua68faad875d238f2b77e6f4b1df027ab'
+    }
+    user_profile = line_bot_api.get_profile(user_id=user_id)
+    pesan = f"{user_profile.display_name}: {message}\n\nuserID: {user_id}"
+    line_bot_api.push_message(admins[admin_name], TextSendMessage(text=pesan)) # Tes kirim ke Alif
+
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
-    user_profile = line_bot_api.get_profile(user_id=user_id)
     message = event.message.text.lower()
-    line_bot_api.push_message('Ua68faad875d238f2b77e6f4b1df027ab', TextSendMessage(text=message+user_profile.display_name)) # Tes kirim ke Alif
+    sendToAdmin(message, user_id, 'Alif')
     list_sapaan = ["halo", "halo", "hi", "hai"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak"]
