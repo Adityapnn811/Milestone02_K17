@@ -97,7 +97,7 @@ def handle_message(event):
     if message_raw[:3] == "###": 
         # Fitur khusus admin, untuk ngejawab chat
         # Chat harus diakhiri dengan userID penerima
-        sendToUser(message[3:-33].strip(), user_id, message[-33:])
+        sendToUser(f"{message[3:-33]}\n\nevent.reply_token".strip(), user_id, message[-33:])
     else:
         chatBot(event.reply_token, message)
 
