@@ -37,18 +37,34 @@ def sendToAdmin(message,user_id, admin_name):
     # user_id adalah userID dari line
     # admin_name adalah nama admin, ada di dict admins
     admins = {
-        'Alif' : 'Ua68faad875d238f2b77e6f4b1df027ab'
+        'Alif Yasa' : 'Ua68faad875d238f2b77e6f4b1df027ab'
     }
     user_profile = line_bot_api.get_profile(user_id=user_id)
-    pesan = f"{user_profile.display_name}: {message}\n\nuserID: {user_id}"
+    # Menurutku message ke Admin dengan message ke user harus berbeda
+    # karena sepertinya lebih baik jika admin tahu detailnya
+    pesan = f"{user_profile.display_name}: {message}\n\nuserID: `{user_id}`"
     line_bot_api.push_message(admins[admin_name], TextSendMessage(text=pesan)) # Tes kirim ke Alif
+
+def sendToUser(message, admin_id):
+     # message adalah pesan, bagian akhir message harus ada userID
+     # admin id adalah id dari admin, nantinya akan di check     
+    admins = {
+        'Alif Yasa' : 'Ua68faad875d238f2b77e6f4b1df027ab'
+    }
+    user_profile = line_bot_api.get_profile(user_id=user_id)
+    if admins[user_profile.display_name] == admin_id:
+        try: 
+            line_bot_api.push_message(message.strip()[:-33], TextSendMessage(text=message[:-33].strip()))
+        except:
+            abort(400)
+    
 
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     message = event.message.text.lower()
-    sendToAdmin(message, user_id, 'Alif')
+    sendToAdmin(message, user_id, 'Alif Yasa')
     list_sapaan = ["halo", "halo", "hi", "hai"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak"]
