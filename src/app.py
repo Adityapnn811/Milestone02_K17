@@ -61,8 +61,9 @@ def callback_admin():
         #sent_msg = TextSendMessage(text=pesan_admin)
         #line_bot_api.push_message(id_user, sent_msg)
 	line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
+	return 'OK'
     except:
-        pass
+        return 'NOT OK'
 
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
