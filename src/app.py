@@ -36,6 +36,20 @@ line_bot_api = LineBotApi('KBYcJt1ZmbmMnkQM0ZW6uREsAtE7QSARwDrVprACm91i3/zpvlJZV
 # Channel Secret
 handler = WebhookHandler('38cb174b5ffbf238b2b7048c47676654')
 
+# Callback untuk aplikasi Admin
+@app.route("/admin-chat", methods=['GET'])
+def callback_admin():
+    try:
+        #json_data = request.json
+        #id_user = json_data["id_user"]
+        #pesan_admin = json_data["pesan_admin"]
+        #sent_msg = TextSendMessage(text=pesan_admin)
+        #line_bot_api.push_message(id_user, sent_msg)
+        line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
+        return 'OK'
+    except:
+        return 'NOT OK'
+
 # callback Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -50,20 +64,6 @@ def callback():
     except InvalidSignatureError:
         abort(400)
     return 'OK'
-
-# Callback untuk aplikasi Admin
-@app.route("/admin-chat", methods=['GET'])
-def callback_admin():
-    try:
-        #json_data = request.json
-        #id_user = json_data["id_user"]
-        #pesan_admin = json_data["pesan_admin"]
-        #sent_msg = TextSendMessage(text=pesan_admin)
-        #line_bot_api.push_message(id_user, sent_msg)
-	line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
-	return 'OK'
-    except:
-        return 'NOT OK'
 
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
