@@ -94,7 +94,7 @@ def handle_message(event):
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     if message_raw[:3] == "###":
-        sendToUser(message[3:], user_id)
+        sendToUser(message_raw[3:], user_id)
 
 
 import os
