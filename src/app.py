@@ -42,7 +42,7 @@ def sendToAdmin(message,user_id, admin_name):
     user_profile = line_bot_api.get_profile(user_id=user_id)
     # Menurutku message ke Admin dengan message ke user harus berbeda
     # karena sepertinya lebih baik jika admin tahu detailnya
-    pesan = f"[{user_profile.display_name}]]\n{message}\n[{user_id}]"
+    pesan = f"[{user_profile.display_name}]\n\n{message}\n\n[{user_id}]"
     line_bot_api.push_message(admins[admin_name], TextSendMessage(text=pesan)) # Tes kirim ke Alif
 
 def sendToUser(message, admin_id, recipient_id):
@@ -63,7 +63,7 @@ def sendToUser(message, admin_id, recipient_id):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
-    message_raw = event.message.text
+    message_raw = event.message.text.strip()
     message = message_raw.lower()
     sendToAdmin(message, user_id, 'Alif Yasa')
     list_sapaan = ["halo", "halo", "hi", "hai"]
@@ -94,7 +94,7 @@ def handle_message(event):
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     if message_raw[:3] == "###":
-        sendToUser(message_raw[3:].strip(), user_id, message_raw[-33:])
+        sendToUser(message_raw[3:-33].strip(), user_id, message_raw[-33:])
 
 
 import os
