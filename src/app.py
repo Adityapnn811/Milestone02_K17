@@ -57,7 +57,31 @@ def sendToUser(message, admin_id, recipient_id):
             line_bot_api.push_message(recipient_id, TextSendMessage(text=message.strip()))
         except:
             abort(400)
-    
+def chatBot(message):
+    list_sapaan = ["halo", "halo", "hi", "hai"]
+    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
+    list_response = ["iya", "tidak"]
+    if checker(message, list_sapaan):
+        reply_msg = "Hai aku Kirana, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
+        sent_msg = TextSendMessage(text=reply_msg)
+    elif checker(message, list_katakunci):
+        if "stress" in message:
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+        reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
+        sent_response = TextSendMessage(text=reply_response)
+        return [sent_response, sent_msg]
+    elif checker(message, list_response):
+        if "iya" in message:
+            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
+            sent_msg = TextSendMessage(text=reply_msg)
+        else:
+            reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+    else:
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
+        sent_msg = TextSendMessage(text=reply_msg)
+    return sent_msg
 
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
@@ -66,35 +90,11 @@ def handle_message(event):
     message_raw = event.message.text.strip()
     message = message_raw.lower()
     sendToAdmin(message, user_id, 'Alif Yasa')
-    list_sapaan = ["halo", "halo", "hi", "hai"]
-    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
-    list_response = ["iya", "tidak"]
-    if checker(message, list_sapaan):
-        reply_msg = "Hai aku Kirana, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
-        sent_msg = TextSendMessage(text=reply_msg)
-        line_bot_api.reply_message(event.reply_token, sent_msg)
-    elif checker(message, list_katakunci):
-        if "stress" in message:
-            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
-            sent_msg = TextSendMessage(text=reply_msg)
-        reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
-        sent_response = TextSendMessage(text=reply_response)
-        line_bot_api.reply_message(event.reply_token, [sent_response, sent_msg])
-    elif checker(message, list_response):
-        if "iya" in message:
-            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
-            sent_msg = TextSendMessage(text=reply_msg)
-            line_bot_api.reply_message(event.reply_token, sent_msg)
-        else:
-            reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
-            sent_msg = TextSendMessage(text=reply_msg)
-            line_bot_api.reply_message(event.reply_token, sent_msg)
-    else:
-        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
-        sent_msg = TextSendMessage(text=reply_msg)
-        line_bot_api.reply_message(event.reply_token, sent_msg)
     if message_raw[:3] == "###":
         sendToUser(message_raw[3:-33].strip(), user_id, message_raw[-33:])
+        line_bot_api.reply_message(event.reply_token, f"Sent to {line_bot_api.get_profile(user_id=message_raw[-33:]).display_name}")
+    else:
+        line_bot_api.reply_message(event.reply_token, chatBot(message))
 
 
 import os
