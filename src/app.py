@@ -51,7 +51,7 @@ def sendToUser(message, admin_id, recipient_id):
     admins = {
         'Alif Yasa' : 'Ua68faad875d238f2b77e6f4b1df027ab'
     }
-    user_profile = line_bot_api.get_profile(user_id=user_id)
+    user_profile = line_bot_api.get_profile(user_id=admin_id)
     if admins[user_profile.display_name] == admin_id:
         try: 
             line_bot_api.push_message(recipient_id, TextSendMessage(text=message.strip()))
@@ -65,7 +65,7 @@ def handle_message(event):
     user_id = event.source.user_id
     message_raw = event.message.text
     message = message_raw.lower()
-    sendToAdmin(message_raw, user_id, 'Alif Yasa')
+    sendToAdmin(message_raw[:-33], user_id, 'Alif Yasa')
     list_sapaan = ["halo", "halo", "hi", "hai"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak"]
