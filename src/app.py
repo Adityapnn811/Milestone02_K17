@@ -51,6 +51,18 @@ def callback():
         abort(400)
     return 'OK'
 
+# Callback untuk aplikasi Admin
+@app.route("/admin-chat", methods=['GET'])
+def callback_admin():
+    try:
+        json_data = request.json
+        id_user = json_data["id_user"]
+        pesan_admin = json_data["pesan_admin"]
+        sent_msg = TextSendMessage(text=pesan_admin)
+        line_bot_api.push_message(id_user, sent_msg)
+    except:
+        pass
+
 # Take user's sent text
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):

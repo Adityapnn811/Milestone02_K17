@@ -1,0 +1,32 @@
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+public class KontakServer{
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        String idUser = scanner.nextLine();
+        String pesan = scanner.nextLine();
+
+        String queryUrl = "https://kirana-bot.herokuapp.com/admin-chat";
+        String pesanJson = String.format("{ \"id_user\" : \"%s\", \"pesan_admin\" : \"%s\" }", idUser, pesan);
+
+        try {
+            URL url = new URL(queryUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(20000);
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestMethod("GET");
+            OutputStream os = conn.getOutputStream();
+            os.write(pesanJson.getBytes("UTF-8"));
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        scanner.close();
+    }
+}
