@@ -37,7 +37,7 @@ line_bot_api = LineBotApi('KBYcJt1ZmbmMnkQM0ZW6uREsAtE7QSARwDrVprACm91i3/zpvlJZV
 handler = WebhookHandler('38cb174b5ffbf238b2b7048c47676654')
 
 # Callback untuk aplikasi Admin
-@app.route("/admin-chat")
+@app.route("/admin-chat", methods=['POST', 'GET'])
 def callback_admin():
     try:
         json_data = request.json
