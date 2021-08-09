@@ -40,12 +40,12 @@ handler = WebhookHandler('38cb174b5ffbf238b2b7048c47676654')
 @app.route("/admin-chat")
 def callback_admin():
     try:
-        #json_data = request.json
-        #id_user = json_data["id_user"]
-        #pesan_admin = json_data["pesan_admin"]
-        #sent_msg = TextSendMessage(text=pesan_admin)
-        #line_bot_api.push_message(id_user, sent_msg)
-        line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
+        json_data = request.json
+        id_user = json_data["id_user"]
+        pesan_admin = json_data["pesan_admin"]
+        sent_msg = TextSendMessage(text=pesan_admin)
+        line_bot_api.push_message(id_user, sent_msg)
+        #line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
         return 'OK'
     except:
         return 'NOT OK'
