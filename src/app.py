@@ -36,11 +36,13 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = event.message.text.lower()
-    list_sapaan = ["halo", "halo", "hi", "hai"]
+    list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
     list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak"]
     if checker(message, list_sapaan):
-        reply_msg = "Hai aku Kirana, disini aku akan menemani kamu. Boleh kalo mau curhat yah"
+        profile = line_bot_api.get_profile(event.source.user_id)
+        nama = profile.display_name
+        reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu?"
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     elif checker(message, list_katakunci):
@@ -49,7 +51,7 @@ def handle_message(event):
             sent_msg = TextSendMessage(text=reply_msg)
         reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
         sent_response = TextSendMessage(text=reply_response)
-        line_bot_api.reply_message(event.reply_token, [sent_response, sent_msg])
+        line_bot_api.reply_message(event.reply_token, [sent_msg, sent_response])
     elif checker(message, list_response):
         if "iya" in message:
             reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
