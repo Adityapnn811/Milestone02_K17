@@ -76,7 +76,7 @@ def handle_message(event):
     line_bot_api.push_message(id_admin, TextSendMessage(text="Tes1"))
     result = None
     try:
-        psql_cur.execute("SELECT * FROM chatadmin WHERE id_user={};".format(user_id))
+        psql_cur.execute("SELECT * FROM chatadmin WHERE id_user='{}';".format(user_id))
         result = psql_cur.fetchone()
     except:
         pass
@@ -90,13 +90,13 @@ def handle_message(event):
     elif result:
         id_client = result[0]
         if "mode bot" in event.message.text.lower():
-            psql_cur.execute("DELETE FROM chatadmin WHERE id_user={};".format(id_client))
+            psql_cur.execute("DELETE FROM chatadmin WHERE id_user='{}';".format(id_client))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Bot"), TextSendMessage(text="Sekarang Anda berbicara dengan Bot")])
         else:
             line_bot_api.push_message(id_admin, TextSendMessage(text=event.message.text))
     else:
         if "mode admin" in event.message.text.lower():
-            psql_cur.execute("INSERT INTO chatadmin VALUES ({});".format(user_id))
+            psql_cur.execute("INSERT INTO chatadmin VALUES ('{}');".format(user_id))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang Anda berbicara dengan Admin")])
             return
         try:
@@ -106,11 +106,12 @@ def handle_message(event):
                     time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
                     event.message.text.replace("'", "''"))
             psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ";")
-            psql_conn.commit()
+            #psql_conn.commit()
             sent_msg = TextSendMessage(text=pesan_sql)
             line_bot_api.reply_message(event.reply_token, sent_msg)
         except:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Maaf, suatu error terjadi"))
+    psql_conn.commit()
 
 import os
 if __name__ == "__main__":
