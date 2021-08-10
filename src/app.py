@@ -76,7 +76,7 @@ def handle_message(event):
     #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes1"))
     result = None
     try:
-        psql_cur.execute("SELECT * FROM chatadmin WHERE id_user='{}';".format(user_id))
+        psql_cur.execute("SELECT * FROM chatadmin;".format(user_id))
         result = psql_cur.fetchone()
     except:
         pass
