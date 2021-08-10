@@ -82,7 +82,7 @@ def handle_message(event):
         pass
 
     line_bot_api.push_message(id_admin, TextSendMessage(text="Tes2"))
-    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes3" + result))
+    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes3" + str(result)))
     # Jika Admin dan ada client yang menghubungi admin
     if result and user_id == id_admin:
         id_client = result[0]
