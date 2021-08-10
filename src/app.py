@@ -73,7 +73,7 @@ def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
 
-    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes1"))
+    #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes1"))
     result = None
     try:
         psql_cur.execute("SELECT * FROM chatadmin WHERE id_user='{}';".format(user_id))
@@ -81,8 +81,8 @@ def handle_message(event):
     except:
         pass
 
-    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes2"))
-    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes3" + str(result)))
+    #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes2"))
+    #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes3" + str(result)))
     # Jika Admin dan ada client yang menghubungi admin
     if result and user_id == id_admin:
         id_client = result[0]
@@ -97,6 +97,7 @@ def handle_message(event):
     else:
         if "mode admin" in event.message.text.lower():
             psql_cur.execute("INSERT INTO chatadmin VALUES ('{}');".format(user_id))
+            line_bot_api.push_message(id_admin, TextSendMessage(text="Nama user {}".format(user_profile.display_name)))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang Anda berbicara dengan Admin")])
             return
         try:
