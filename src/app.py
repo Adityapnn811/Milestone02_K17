@@ -73,8 +73,11 @@ def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
 
+    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes1"))
     psql_cur.execute("SELECT * FROM chatadmin WHERE id_user={};".format(user_id))
+    line_bot_api.push_message(id_admin, TextSendMessage(text="Tes2"))
     result = psql_cur.fetchone()
+    line_bot_api.push_message(id_admin, TextSendMessage(text=result))
     # Jika Admin dan ada client yang menghubungi admin
     if result and user_id == id_admin:
         id_client = result[0]
