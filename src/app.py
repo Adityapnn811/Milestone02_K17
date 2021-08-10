@@ -1,5 +1,9 @@
+import mode_switch as ms
+
 import psycopg2     # PostgreSQL
+import pytz         # Untuk waktu dan tanggal
 from flask import Flask, request, abort
+
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -9,7 +13,6 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 from datetime import datetime
-import pytz
 
 app = Flask(__name__)
 
@@ -33,9 +36,8 @@ if __name__ == '__main__':
                                  port=psql_port)
     psql_cur = psql_conn.cursor()
 
-# Channel Access Token
+# Channel Access Token (atas) dan Channel Secret (bawah)
 line_bot_api = LineBotApi('KBYcJt1ZmbmMnkQM0ZW6uREsAtE7QSARwDrVprACm91i3/zpvlJZVHXVVFnVDuRorEceLSqwx8qV/fIDE/qpJF1wdNMykK0kgHIxEeeNywBXIKvcWp+q9Rxw1a3C661yzKWgR/8AYzMt3eLgHAj3MwdB04t89/1O/w1cDnyilFU=')
-# Channel Secret
 handler = WebhookHandler('38cb174b5ffbf238b2b7048c47676654')
 
 # Callback untuk aplikasi Admin
@@ -47,7 +49,6 @@ def callback_admin():
         pesan_admin = json_data["pesan_admin"]
         sent_msg = TextSendMessage(text=pesan_admin)
         line_bot_api.push_message(id_user, sent_msg)
-        #line_bot_api.push_message("U2cc53b28669cf7c907d47e8653c08c6a", TextSendMessage(text="Hello, World"))
         return 'OK'
     except:
         return 'NOT OK'
@@ -67,27 +68,54 @@ def callback():
         abort(400)
     return 'OK'
 
-# Take user's sent text
+# Menghandle pesan teks yang masuk
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
+    user_msg = event.message.text
 
-    #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes1"))
-    result = None
-    try:
-        psql_cur.execute("SELECT * FROM chatadmin;".format(user_id))
-        result = psql_cur.fetchone()
-    except:
-        pass
+    psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_user='{}';".format(user_id))
+    hasil_dilayani = psql_cur.fetchone()
+    if hasil_dilayani:
+        if user_msg.lower() == "mode bot":
+            id_admin_free = hasil_dilayani[1]
+            psql_cur.execute("DELETE FROM dilayani_admin WHERE id_user='{};".format(user_id))
+            psql_cur.execute("SELECT * FROM antrean_admin;")
+            first_antrean = psql_cur.fetchone()
+            if first_antrean:
+                id_user_firstantre = first_antrean[0]
+                psql_cur.execute("INSERT INTO dilayani_admin VALUES ('{}', '{}', {});".format(id_user_firstantre, id_admin_free, datetime.now().timestamp()))
+                psql_cur.execute("DELETE FROM antrean_admin WHERE id_user='{}'".format(id_user_firstantre))
+            else:
+                pass
+            psql_conn.commit()
+            return
+        id_admin_melayani = hasil_dilayani[1]
+        line_bot_api.push_message(id_admin_melayani, TextSendMessage(text=user_msg))
+        psql_conn.commit()
+        return
+    
+    hasil_antrean = psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%;", (user_id))
+    if hasil_antrean:
+        if user_msg.lower == "batal admin":
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%;", user_id)
+            psql_conn.commit()
+        else:
+            # Mohon bersabar, atau "batal admin"
+            pass
+        return
+    
+    
+    psql_cur.execute("SELECT * FROM chatadmin;")
+    result = psql_cur.fetchone()
 
-    #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes2"))
-    #line_bot_api.push_message(id_admin, TextSendMessage(text="Tes3" + str(result)))
-    # Jika Admin dan ada client yang menghubungi admin
-    if result and user_id == id_admin:
+    # Jika admin mengirim pesan, dan ada client yang menghubungi admin
+    if result != None and user_id == id_admin:
         id_client = result[0]
         line_bot_api.push_message(id_client, TextSendMessage(text=event.message.text))
-    elif result:
+    # Jika user mengirim pesan, dan user sedang menghubungi admin
+    elif result != None:
         id_client = result[0]
         if "mode bot" in event.message.text.lower():
             psql_cur.execute("DELETE FROM chatadmin WHERE id_user='{}';".format(id_client))
@@ -98,7 +126,9 @@ def handle_message(event):
         if "mode admin" in event.message.text.lower():
             psql_cur.execute("INSERT INTO chatadmin VALUES ('{}');".format(user_id))
             line_bot_api.push_message(id_admin, TextSendMessage(text="Nama user {}".format(user_profile.display_name)))
-            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang Anda berbicara dengan Admin")])
+            line_bot_api.reply_message(event.reply_token,
+                                        [TextSendMessage(text="Berpindah ke Mode Admin"),
+                                        TextSendMessage(text="Sekarang Anda berbicara dengan Admin")])
             return
         try:
             time_now = datetime.now(pytz.timezone('Etc/GMT-7'))
@@ -107,7 +137,6 @@ def handle_message(event):
                     time_now.day, time_now.month, time_now.year, time_now.hour, time_now.minute,
                     event.message.text.replace("'", "''"))
             psql_cur.execute("INSERT INTO riwayatcakap VALUES " + pesan_sql + ";")
-            #psql_conn.commit()
             sent_msg = TextSendMessage(text=pesan_sql)
             line_bot_api.reply_message(event.reply_token, sent_msg)
         except:
