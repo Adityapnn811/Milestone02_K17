@@ -81,7 +81,7 @@ def handle_message(event):
         if "mode bot" in user_msg.lower():
             id_admin_free = hasil_dilayani[1]
             psql_cur.execute("DELETE FROM dilayani_admin WHERE id_user=%s;", (user_id,))
-            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Bot"), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Bot..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
             line_bot_api.push_message(id_admin_free, TextSendMessage(text=user_profile.display_name + " BERHENTI MENGHUBUNGI ADMIN"))
             psql_cur.execute("SELECT * FROM antrean_admin;")
             first_antrean = psql_cur.fetchone()
@@ -89,7 +89,7 @@ def handle_message(event):
                 id_user_firstantre = first_antrean[0]
                 psql_cur.execute("INSERT INTO dilayani_admin VALUES ('{}', '{}', {});".format(id_user_firstantre, id_admin_free, datetime.now().timestamp()))
                 psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s", (id_user_firstantre,))
-                line_bot_api.push_message(id_user_firstantre, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\"")])
+                line_bot_api.push_message(id_user_firstantre, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\"")])
                 line_bot_api.push_message(id_admin_free, TextSendMessage(text=line_bot_api.get_profile(user_id=id_user_firstantre).display_name + " MENGHUBUNGI ADMIN"))
             else:
                 pass
@@ -129,7 +129,13 @@ def handle_message(event):
         psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_admin=%s", (user_id,))
         admin_melayani = psql_cur.fetchone()
         if admin_melayani:
-            line_bot_api.push_message(admin_melayani[0], TextSendMessage(text=user_msg))
+            if "stoppen pengguna" in user_msg.lower():
+                psql_cur.execute("DELETE FROM dilayani_admin WHERE id_admin=%s", (user_id,))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Anda MENGHENTIKAN CHAT " + line_bot_api.get_profile(user_id=admin_melayani[0]).display_name))
+                line_bot_api.push_message(admin_melayani[0], [TextSendMessage(text="Admin menghentikan percakapan kamu..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
+                psql_conn.commit()
+            else:
+                line_bot_api.push_message(admin_melayani[0], TextSendMessage(text=user_msg))
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Anda sedang tidak melayani pengguna"))
         return
