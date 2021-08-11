@@ -104,7 +104,7 @@ def handle_message(event):
     if hasil_antrean:
         psql_cur.execute("SELECT * FROM dilayani_admin;")
         sedang_dilayani = psql_cur.fetchall()
-        if user_msg.lower == "batal admin":
+        if "batal admin" in user_msg.lower():
             psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Membatalkan menghubungi Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
         elif sedang_dilayani and len(sedang_dilayani) < ms.admin_count:
@@ -134,7 +134,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Anda sedang tidak melayani pengguna"))
         return
 
-    if "mode admin" in user_msg:
+    if "mode admin" in user_msg.lower():
         psql_cur.execute("SELECT * FROM dilayani_admin;")
         sedang_dilayani = psql_cur.fetchall()
         if sedang_dilayani and len(sedang_dilayani) < ms.admin_count:
@@ -142,13 +142,17 @@ def handle_message(event):
             for pelayanan in sedang_dilayani:
                 id_admins_sibuk.append(pelayanan[1])
             id_admins_free = list(set(ms.id_admins) - set(id_admins_sibuk))
+
             psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, id_admins_free[0], datetime.now().timestapm()))
-            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])
+            line_bot_api.push_message(id_admins_free[0], TextSendMessage(text=user_profile.display_name + " MENGHUBUNGI ADMIN"))
         elif  not sedang_dilayani and  ms.admin_count > 0:
             psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, ms.id_admins[0], datetime.now().timestamp()))
-            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])            
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])            
+            line_bot_api.push_message(ms.id_admins[0], TextSendMessage(text=user_profile.display_name + " MENGHUBUNGI ADMIN"))
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain. Untuk tidak jadi/batal, ketik \"batal admin\""))
+            psql_cur.execute("INSERT INTO antrean_admin VALUES (%s);", (user_id,))
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
     
