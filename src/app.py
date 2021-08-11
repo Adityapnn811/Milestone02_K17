@@ -75,12 +75,12 @@ def handle_message(event):
     user_profile = line_bot_api.get_profile(user_id=user_id)
     user_msg = event.message.text
 
-    psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_user=%s;", (user_id))
+    psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_user=%s;", (user_id,))
     hasil_dilayani = psql_cur.fetchone()
     if hasil_dilayani:
         if "mode bot" in user_msg.lower():
             id_admin_free = hasil_dilayani[1]
-            psql_cur.execute("DELETE FROM dilayani_admin WHERE id_user=%s;", (user_id))
+            psql_cur.execute("DELETE FROM dilayani_admin WHERE id_user=%s;", (user_id,))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Bot"), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
             line_bot_api.push_message(id_admin_free, TextSendMessage(text=user_profile.display_name + " BERHENTI MENGHUBUNGI ADMIN"))
             psql_cur.execute("SELECT * FROM antrean_admin;")
@@ -88,7 +88,7 @@ def handle_message(event):
             if first_antrean:
                 id_user_firstantre = first_antrean[0]
                 psql_cur.execute("INSERT INTO dilayani_admin VALUES ('{}', '{}', {});".format(id_user_firstantre, id_admin_free, datetime.now().timestamp()))
-                psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s", (id_user_firstantre))
+                psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s", (id_user_firstantre,))
                 line_bot_api.push_message(id_user_firstantre, [TextSendMessage(text="Berpindah ke Mode Admin"), TextSendMessage(text="Sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\"")])
                 line_bot_api.push_message(id_admin_free, TextSendMessage(text=line_bot_api.get_profile(user_id=id_user_firstantre).display_name + " MENGHUBUNGI ADMIN"))
             else:
@@ -99,13 +99,13 @@ def handle_message(event):
         line_bot_api.push_message(id_admin_melayani, TextSendMessage(text=user_msg))
         return
     
-    psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id))
+    psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id,))
     hasil_antrean = psql_cur.fetchone()
     if hasil_antrean:
         psql_cur.execute("SELECT * FROM dilayani_admin;")
         sedang_dilayani = psql_cur.fetchall()
         if user_msg.lower == "batal admin":
-            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id))
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Membatalkan menghubungi Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
         elif sedang_dilayani and len(sedang_dilayani) < ms.admin_count:
             id_admins_sibuk = []
@@ -113,11 +113,11 @@ def handle_message(event):
                 id_admins_sibuk.append(pelayanan[1])
             id_admins_free = list(set(ms.id_admins) - set(id_admins_sibuk))
             psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, id_admins_free[0], datetime.now().timestamp()))
-            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id))
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Selamat, sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\""))
         elif not sedang_dilayani and ms.admin_count > 0:
             psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, ms.id_admins[0], datetime.now().timestamp()))
-            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id))
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Selamat, sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\""))
         else:
             # Mohon bersabar Anda urutan xx, atau "batal admin"
@@ -126,7 +126,7 @@ def handle_message(event):
         return
     
     if user_id in ms.id_admins:
-        psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_admin=%s", (user_id))
+        psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_admin=%s", (user_id,))
         admin_melayani = psql_cur.fetchone()
         if admin_melayani:
             line_bot_api.push_message(admin_melayani[0], TextSendMessage(text=user_msg))
