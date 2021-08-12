@@ -30,7 +30,7 @@ psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
 
 if __name__ == '__main__':
     psql_conn = psycopg2.connect(host=psql_host,
-                                 database=psql_database, 
+                                 database=psql_database,
                                  user=psql_user,
                                  password=psql_password,
                                  port=psql_port)
@@ -98,7 +98,7 @@ def handle_message(event):
         id_admin_melayani = hasil_dilayani[1]
         line_bot_api.push_message(id_admin_melayani, TextSendMessage(text=user_msg))
         return
-    
+
     psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id,))
     hasil_antrean = psql_cur.fetchone()
     if hasil_antrean:
@@ -124,7 +124,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain. Untuk tidak jadi/batal, ketik \"batal admin\""))
         psql_conn.commit()
         return
-    
+
     if user_id in ms.id_admins:
         psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_admin=%s", (user_id,))
         admin_melayani = psql_cur.fetchone()
@@ -154,18 +154,33 @@ def handle_message(event):
             line_bot_api.push_message(id_admins_free[0], TextSendMessage(text=user_profile.display_name + " MENGHUBUNGI ADMIN"))
         elif  not sedang_dilayani and  ms.admin_count > 0:
             psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, ms.id_admins[0], datetime.now().timestamp()))
-            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])            
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])
             line_bot_api.push_message(ms.id_admins[0], TextSendMessage(text=user_profile.display_name + " MENGHUBUNGI ADMIN"))
         else:
             psql_cur.execute("INSERT INTO antrean_admin VALUES (%s);", (user_id,))
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
-    
+
+    if text == 'image_carousel':
+        image_carousel_template = ImageCarouselTemplate(columns=[
+            ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
+                                action=DatetimePickerAction(label='datetime',
+                                                            data='datetime_postback',
+                                                            mode='datetime')),
+            ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
+                                action=DatetimePickerAction(label='date',
+                                                            data='date_postback',
+                                                            mode='date'))
+        ])
+        template_message = TemplateSendMessage(
+            alt_text='ImageCarousel alt text', template=image_carousel_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+
     # Di bawah ini bagian logika percakapan pengguna
     # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_msg))
-    
+
     return
 
 
