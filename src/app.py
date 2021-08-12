@@ -162,8 +162,8 @@ def handle_message(event):
         psql_conn.commit()
         return
 
-    if 'image_carousel' in user_msg.lower():
-        image_carousel_template = ImageCarouselTemplate(columns=[
+    if 'carousel' in user_msg.lower():
+        carousel_template = ImageCarouselTemplate(columns=[
             ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
                                 action=DatetimePickerAction(label='datetime',
                                                             data='datetime_postback',
@@ -173,8 +173,7 @@ def handle_message(event):
                                                             data='date_postback',
                                                             mode='date'))
         ])
-        template_message = TemplateSendMessage(
-            alt_text='ImageCarousel alt text', template=image_carousel_template)
+        template_message = TemplateSendMessage(alt_text='ImageCarousel alt text', template=carousel_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
     # Di bawah ini bagian logika percakapan pengguna
