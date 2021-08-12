@@ -162,7 +162,7 @@ def handle_message(event):
         psql_conn.commit()
         return
 
-    if text == 'image_carousel':
+    if 'image_carousel' in user_msg.lower():
         image_carousel_template = ImageCarouselTemplate(columns=[
             ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
                                 action=DatetimePickerAction(label='datetime',
