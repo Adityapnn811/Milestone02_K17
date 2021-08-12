@@ -1,0 +1,17 @@
+Ada dua database: antrean dan dilayani
+dilayani: id user, id admin, terakhir chat epoch integer
+antrean: id user
+Dilayani akan hangus bila ada orang di antrean dan pengguna sudah tidak menjawab selama 1 jam
+
+1. User menghubungi
+2. User berpindah ke mode Admin
+3. User ditambahkan ke antrean
+4. Cek apakah ada admin yang kosong (database dilayani < jumlah admin)
+	Jika ada, tambahkan ke dilayani, hapus dari antrean
+	Jika tidak, cek apakah ada yang sudah timeout, hapus yang timeout dan tambahkan ke dilayani, jika tidak tunggu dalam antrean berapa
+5. Jika selesai, hapus dari dilayani, cek apakah ada antrean, jika ada tamabahkan
+
+Jika user membatalkan dalam rentang "mode admin" dan antrean, kirim "batal admin", kembali ke mode bot
+Hapus dari antrean
+Jika user mengetik apa pun dalam selang waktu, kirim pesan menunggu dan atau batal dengan mengirim "mode admin"
+Buat schedule selama selang waktu tertentu mengecek
