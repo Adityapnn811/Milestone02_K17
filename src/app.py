@@ -13,6 +13,7 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 from datetime import datetime
+from checker import *
 
 app = Flask(__name__)
 
@@ -73,7 +74,8 @@ def callback():
 def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
-    user_msg = event.message.text
+    user_msg = event.message.text.lower()
+    nama = user_profile.display_name
 
     psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_user=%s;", (user_id,))
     hasil_dilayani = psql_cur.fetchone()
@@ -179,7 +181,33 @@ def handle_message(event):
 
     # Di bawah ini bagian logika percakapan pengguna
     # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_msg))
+    list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
+    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
+    list_response = ["iya", "tidak"]
+    if checker(user_msg, list_sapaan):
+        reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu?"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    elif checker(user_msg, list_katakunci):
+        if "stress" in user_msg:
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+        reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
+        sent_response = TextSendMessage(text=reply_response)
+        line_bot_api.reply_message(event.reply_token, [sent_msg, sent_response])
+    elif checker(user_msg, list_response):
+        if "iya" in user_msg:
+            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+        else:
+            reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+    else:
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
 
     return
 
