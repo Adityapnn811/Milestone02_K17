@@ -32,6 +32,7 @@ def callback():
 
 
 
+<<<<<<< Updated upstream
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
@@ -56,6 +57,100 @@ def handle_message(event):
     else:
         message = TextSendMessage(text=msg)
         line_bot_api.reply_message(event.reply_token, message)
+=======
+    psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id,))
+    hasil_antrean = psql_cur.fetchone()
+    if hasil_antrean:
+        psql_cur.execute("SELECT * FROM dilayani_admin;")
+        sedang_dilayani = psql_cur.fetchall()
+        if "batal admin" in user_msg.lower():
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Membatalkan menghubungi Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
+        elif sedang_dilayani and len(sedang_dilayani) < ms.admin_count:
+            id_admins_sibuk = []
+            for pelayanan in sedang_dilayani:
+                id_admins_sibuk.append(pelayanan[1])
+            id_admins_free = list(set(ms.id_admins) - set(id_admins_sibuk))
+            psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, id_admins_free[0], datetime.now().timestamp()))
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Selamat, sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\""))
+        elif not sedang_dilayani and ms.admin_count > 0:
+            psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, ms.id_admins[0], datetime.now().timestamp()))
+            psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s;", (user_id,))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Selamat, sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\""))
+        else:
+            # Mohon bersabar Anda urutan xx, atau "batal admin"
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain. Untuk tidak jadi/batal, ketik \"batal admin\""))
+        psql_conn.commit()
+        return
+
+    if user_id in ms.id_admins:
+        psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_admin=%s", (user_id,))
+        admin_melayani = psql_cur.fetchone()
+        if admin_melayani:
+            if "stoppen pengguna" in user_msg.lower():
+                psql_cur.execute("DELETE FROM dilayani_admin WHERE id_admin=%s", (user_id,))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Anda MENGHENTIKAN CHAT " + line_bot_api.get_profile(user_id=admin_melayani[0]).display_name))
+                line_bot_api.push_message(admin_melayani[0], [TextSendMessage(text="Admin menghentikan percakapan kamu..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
+                psql_conn.commit()
+            else:
+                line_bot_api.push_message(admin_melayani[0], TextSendMessage(text=user_msg))
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text="Anda sedang tidak melayani pengguna"))
+        return
+
+    if "mode admin" in user_msg.lower():
+        psql_cur.execute("SELECT * FROM dilayani_admin;")
+        sedang_dilayani = psql_cur.fetchall()
+        if sedang_dilayani and len(sedang_dilayani) < ms.admin_count:
+            id_admins_sibuk = []
+            for pelayanan in sedang_dilayani:
+                id_admins_sibuk.append(pelayanan[1])
+            id_admins_free = list(set(ms.id_admins) - set(id_admins_sibuk))
+
+            psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, id_admins_free[0], datetime.now().timestapm()))
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])
+            line_bot_api.push_message(id_admins_free[0], TextSendMessage(text=user_profile.display_name + " MENGHUBUNGI ADMIN"))
+        elif  not sedang_dilayani and  ms.admin_count > 0:
+            psql_cur.execute("INSERT INTO dilayani_admin VALUES (%s, %s, %s);", (user_id, ms.id_admins[0], datetime.now().timestamp()))
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu berbicara dengan Admin, ketik \"mode bot\" jika sudah selesai")])
+            line_bot_api.push_message(ms.id_admins[0], TextSendMessage(text=user_profile.display_name + " MENGHUBUNGI ADMIN"))
+        else:
+            psql_cur.execute("INSERT INTO antrean_admin VALUES (%s);", (user_id,))
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
+        psql_conn.commit()
+        return
+
+    if 'image_carousel' in user_msg.lower():
+        image_carousel_template = ImageCarouselTemplate(columns=[
+            ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
+                                action=DatetimePickerAction(label='datetime',
+                                                            data='datetime_postback',
+                                                            mode='datetime')),
+            ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
+                                action=DatetimePickerAction(label='date',
+                                                            data='date_postback',
+                                                            mode='date'))
+        ])
+        template_message = TemplateSendMessage(
+            alt_text='ImageCarousel alt text', template=image_carousel_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+
+    # Di bawah ini bagian logika percakapan pengguna
+    # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_msg))
+    if 'hai' in user_msg.lower() or 'halo' in user_msg.lower() or 'hello' in user_msg.lower():
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Halo, '+ user_profile.display_name+ '! Di sini Kirana. Apa yang bisa aku bantu untukmu'))
+    if 'stress' in user_msg.lower() or 'stres' in user_msg.lower():
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Gapapa kok, hampir semua orang pasti pernah merasakan hal sepertimu. Coba dimaknai saja keadaan yang sekarang, pastinya terjadi untuk membentuk dirimu menjadi lebih baik. Aku punya artikel menarik nih yang mungkin dapat bermanfaat untuk kondisimu sekarang, yuk dicek! \n http://grhasia.jogjaprov.go.id/berita/371/manajemen-stress.html   \n https://www.alodokter.com/ternyata-tidak-sulit-mengatasi-stres  \n   https://hellosehat.com/mental/stres/cara-unik-menghilangkan-stres/'))
+    if 'bosan' in user_msg.lower() or 'bosen' in user_msg.lower() or 'jenuh' in user_msg.lower():
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Haiiiii, lagi bosan yaa?? Kamu bisa isi waktu luangmu dengan kegiatan yang bermanfaat nih! Contohnya, belajar skill baru ataupun berolahraga. Kamu juga bisa menghibur dirimu sendiri menggunakan media hiburan. Kalau belum cukup, kamu bisa kontak admin kami, yuk! \n https://dosenpsikologi.com/cara-menghilangkan-rasa-bosan'))
+    if 'bully' in user_msg.lower() or 'bullying' in user_msg.lower() or 'rundung' in user_msg.lower():
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Heii, kamu orang yang kuat. Hidup ini memang kejam, memaksamu untuk tumbuh lebih cepat karena keadaan. Its okay, aku percaya kamu bisa bangkit lagi dari semua ini. Semoga artikel ini bisa membantu yaa \n https://www.sehatq.com/artikel/trauma-psikologis-bisa-lumpuhkan-kehidupan-ini-cara-menyembuhkannya'))
+    
+    
+    return
+>>>>>>> Stashed changes
 
 
 import os
