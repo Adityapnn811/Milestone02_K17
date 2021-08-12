@@ -2,11 +2,11 @@
 Kelompok Empati-ers (17)
 
 ## Command untuk BOT
-User biasa
-"mode admin"	: menghubungi admin
-"mode bot" 		: selesai menghubungi admin dan berpindah ke mode bot
-"batal admin" 	: tidak jadi mengantre chat admin
+User biasa </br>
+"mode admin"	: menghubungi admin </br>
+"mode bot" 		: selesai menghubungi admin dan berpindah ke mode bot </br>
+"batal admin" 	: tidak jadi mengantre chat admin </br>
 
 
-Admin
-"stoppen pengguna": khusus akun admin, buat menghentikan user yang sedang nge-chat sekarang
+Admin<br/>
+"stoppen pengguna": khusus akun admin, buat menghentikan user yang sedang nge-chat sekarang<br/>
