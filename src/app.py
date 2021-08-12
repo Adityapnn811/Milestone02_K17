@@ -164,7 +164,7 @@ def handle_message(event):
 
     if 'carousel' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(thumbnailImageUrl='https://cdn.idntimes.com/content-images/community/2021/01/20210104-060121-bfb992da3e868dc126514a39313affd2-0acae9ecf3cfd08489acb94a39ce4654.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
+            CarouselColumn(thumbnail_image_url='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja'),
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
