@@ -71,8 +71,10 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    user_msg = event.message.text
-    
+    user_id = event.source.user_id
+    user_profile = line_bot_api.get_profile(user_id=user_id)
+    user_msg = event.message.text.lower()
+    nama = user_profile.display_name
     psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id,))
     hasil_antrean = psql_cur.fetchone()
     if hasil_antrean:
@@ -153,16 +155,30 @@ def handle_message(event):
 
     # Di bawah ini bagian logika percakapan pengguna
     # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
-    if user_msg == 'cat image':
-        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
-        url = 'https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_960_720.png'
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
-    if user_msg == 'elephant image': 
-        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
-        url = 'https://cdn.pixabay.com/photo/2018/11/22/18/17/elephant-3832516_1280.jpg'
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
+    if checker(user_msg, list_sapaan):
+        reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu?"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    elif checker(user_msg, list_katakunci):
+        if "stress" in user_msg:
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+        reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
+        sent_response = TextSendMessage(text=reply_response)
+        line_bot_api.reply_message(event.reply_token, [sent_msg, sent_response])
+    elif checker(user_msg, list_response):
+        if "iya" in user_msg:
+            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+        else:
+            reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
+            sent_msg = TextSendMessage(text=reply_msg)
+            line_bot_api.reply_message(event.reply_token, sent_msg)
+    else:
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
 
     if 'hai' in user_msg.lower() or 'halo' in user_msg.lower() or 'hello' in user_msg.lower():
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Halo, '+ user_profile.display_name+ '! Di sini Kirana. Apa yang bisa aku bantu untukmu'))
@@ -181,7 +197,7 @@ def handle_message(event):
     if 'capek' in user_msg.lower() or 'lelah' in user_msg.lower() : 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Rehat dulu yuk dari semuanya. Istirahatkan pikiran, mental, dan fisikmu supaya kamu bisa berenergi kembali. Ini ada artikel buat kamu, semoga membantu ya! \nhttps://www.hipwee.com/tag/capek/'))
     else:
-        message = TextSendMessage(text=msg)
+        message = TextSendMessage(text=user_msg)
         line_bot_api.reply_message(event.reply_token, message)
     return
 
