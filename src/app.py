@@ -156,7 +156,7 @@ def handle_message(event):
     # Di bawah ini bagian logika percakapan pengguna
     # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
     list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
-    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
+    list_katakunci = ["stres","stress","bosen","bosan","bully","rundung","takut","capek","lelah","anxiety","cemas","gelisah", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak","y","g","ya","ga","tak","enggak"]
     if checker(user_msg, list_sapaan):
         reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu?"
