@@ -69,12 +69,38 @@ def callback():
         abort(400)
     return 'OK'
 
+# Menghandle pesan teks yang masuk
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     user_id = event.source.user_id
     user_profile = line_bot_api.get_profile(user_id=user_id)
     user_msg = event.message.text.lower()
     nama = user_profile.display_name
+
+    psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_user=%s;", (user_id,))
+    hasil_dilayani = psql_cur.fetchone()
+    if hasil_dilayani:
+        if "mode bot" in user_msg.lower():
+            id_admin_free = hasil_dilayani[1]
+            psql_cur.execute("DELETE FROM dilayani_admin WHERE id_user=%s;", (user_id,))
+            line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Berpindah ke Mode Bot..."), TextSendMessage(text="Sekarang kamu berbicara dengan Bot")])
+            line_bot_api.push_message(id_admin_free, TextSendMessage(text=user_profile.display_name + " BERHENTI MENGHUBUNGI ADMIN"))
+            psql_cur.execute("SELECT * FROM antrean_admin;")
+            first_antrean = psql_cur.fetchone()
+            if first_antrean:
+                id_user_firstantre = first_antrean[0]
+                psql_cur.execute("INSERT INTO dilayani_admin VALUES ('{}', '{}', {});".format(id_user_firstantre, id_admin_free, datetime.now().timestamp()))
+                psql_cur.execute("DELETE FROM antrean_admin WHERE id_user=%s", (id_user_firstantre,))
+                line_bot_api.push_message(id_user_firstantre, [TextSendMessage(text="Berpindah ke Mode Admin..."), TextSendMessage(text="Sekarang kamu menghubungi Admin, jika sudah selesai ketik \"mode bot\"")])
+                line_bot_api.push_message(id_admin_free, TextSendMessage(text=line_bot_api.get_profile(user_id=id_user_firstantre).display_name + " MENGHUBUNGI ADMIN"))
+            else:
+                pass
+            psql_conn.commit()
+            return
+        id_admin_melayani = hasil_dilayani[1]
+        line_bot_api.push_message(id_admin_melayani, TextSendMessage(text=user_msg))
+        return
+
     psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id,))
     hasil_antrean = psql_cur.fetchone()
     if hasil_antrean:
@@ -164,7 +190,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, sent_msg)
     elif checker(user_msg, list_katakunci):
         if 'stress' in user_msg.lower() or 'stres' in user_msg.lower():
-            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu \nhttp://grhasia.jogjaprov.go.id/berita/371/manajemen-stress.html \nhttps://www.alodokter.com/ternyata-tidak-sulit-mengatasi-stres  \nhttps://hellosehat.com/mental/stres/cara-unik-menghilangkan-stres/"
             sent_msg = TextSendMessage(text=reply_msg)
         elif 'bosan' in user_msg.lower() or 'bosen' in user_msg.lower() or 'jenuh' in user_msg.lower():
             reply_msg = "Haiiiii, lagi bosan yaa?? Kamu bisa isi waktu luangmu dengan kegiatan yang bermanfaat nih! Contohnya, belajar skill baru ataupun berolahraga. Kamu juga bisa menghibur dirimu sendiri menggunakan media hiburan. Kalau belum cukup, kamu bisa kontak admin kami, yuk! \nhttps://dosenpsikologi.com/cara-menghilangkan-rasa-bosan"            
