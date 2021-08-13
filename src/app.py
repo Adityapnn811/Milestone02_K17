@@ -182,37 +182,21 @@ def handle_message(event):
     # Di bawah ini bagian logika percakapan pengguna
     # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
     list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
-    list_katakunci = ["stres","stress","bosen","bosan","bully","rundung","takut","capek","lelah","anxiety","cemas","gelisah", "lonely", "sepi", "depresi", "bundir", "bunuh"]
-    list_response = ["iya", "tidak","y","g","ya","ga","tak","enggak"]
+    list_katakunci = ["stres", "lonely", "sepi", "depresi", "bundir", "bunuh"]
+    list_response = ["iya", "tidak"]
     if checker(user_msg, list_sapaan):
         reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu?"
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     elif checker(user_msg, list_katakunci):
-        if 'stress' in user_msg.lower() or 'stres' in user_msg.lower():
-            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu \nhttp://grhasia.jogjaprov.go.id/berita/371/manajemen-stress.html \nhttps://www.alodokter.com/ternyata-tidak-sulit-mengatasi-stres  \nhttps://hellosehat.com/mental/stres/cara-unik-menghilangkan-stres/"
-            sent_msg = TextSendMessage(text=reply_msg)
-        elif 'bosan' in user_msg.lower() or 'bosen' in user_msg.lower() or 'jenuh' in user_msg.lower():
-            reply_msg = "Haiiiii, lagi bosan yaa?? Kamu bisa isi waktu luangmu dengan kegiatan yang bermanfaat nih! Contohnya, belajar skill baru ataupun berolahraga. Kamu juga bisa menghibur dirimu sendiri menggunakan media hiburan. Kalau belum cukup, kamu bisa kontak admin kami, yuk! \nhttps://dosenpsikologi.com/cara-menghilangkan-rasa-bosan"            
-            sent_msg = TextSendMessage(text=reply_msg)
-        elif 'bully' in user_msg.lower() or 'bullying' in user_msg.lower() or 'rundung' in user_msg.lower():
-            reply_msg = "Heii, kamu orang yang kuat. Hidup ini memang kejam, memaksamu untuk tumbuh lebih cepat karena keadaan. Its okay, aku percaya kamu bisa bangkit lagi dari semua ini. Semoga artikel ini bisa membantu yaa \nhttps://www.sehatq.com/artikel/trauma-psikologis-bisa-lumpuhkan-kehidupan-ini-cara-menyembuhkannya"
-            sent_msg = TextSendMessage(text=reply_msg)
-        elif 'anxiety' in user_msg.lower() or 'cemas' in user_msg.lower() or 'gelisah' in user_msg.lower(): 
-            reply_msg ="Terkadang apa yang kamu cemaskan tidak seburuk kenyataannya kok. Baca ini, yuk! \nhttp://www.p2ptm.kemkes.go.id/artikel-sehat/olah-raga-atasi-gangguan-kecemasan"
-            sent_msg = TextSendMessage(text=reply_msg)
-        elif 'takut' in user_msg.lower() : 
-            reply_msg ="Iya gapapa kok, wajar muncul ketakutan di dalam dirimu. Sekarang tenangin diri kamu dulu ya, mungkin artikel ini bisa membantu \nhttps://www.sehatq.com/artikel/mengenal-alasan-di-balik-rasa-takut-pada-manusia"
-            sent_msg = TextSendMessage(text=reply_msg)
-        elif 'capek' in user_msg.lower() or 'lelah' in user_msg.lower() : 
-            reply_msg ="Rehat dulu yuk dari semuanya. Istirahatkan pikiran, mental, dan fisikmu supaya kamu bisa berenergi kembali. Ini ada artikel buat kamu, semoga membantu ya! \nhttps://www.hipwee.com/tag/capek/"
+        if "stress" in user_msg:
+            reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu"
             sent_msg = TextSendMessage(text=reply_msg)
         reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
         sent_response = TextSendMessage(text=reply_response)
         line_bot_api.reply_message(event.reply_token, [sent_msg, sent_response])
-
     elif checker(user_msg, list_response):
-        if "iya" in user_msg or "ya" in user_msg or "y" in user_msg:
+        if "iya" in user_msg:
             reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
@@ -224,6 +208,7 @@ def handle_message(event):
         reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
+
     return
 
 
