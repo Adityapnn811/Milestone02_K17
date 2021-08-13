@@ -34,29 +34,8 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message.text
-    if msg == 'cat image':
-        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
-        url = 'https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_960_720.png'
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
-    if msg == 'elephant image': 
-        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
-        url = 'https://cdn.pixabay.com/photo/2018/11/22/18/17/elephant-3832516_1280.jpg'
-        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
+    user_msg = event.message.text
     
-    elif msg == 'kirim beberapa':
-        line_bot_api.reply_message(event.reply_token, [TextSendMessage(text='Keren'), TextSendMessage(text='sekali')])
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Mantap'))
-    elif msg == 'hai' :
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Hallo'))
-    elif msg == 'hallo' :
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Hai'))
-    else:
-        message = TextSendMessage(text=msg)
-        line_bot_api.reply_message(event.reply_token, message)
-
     psql_cur.execute("SELECT * FROM antrean_admin WHERE id_user=%s;", (user_id,))
     hasil_antrean = psql_cur.fetchone()
     if hasil_antrean:
@@ -137,7 +116,17 @@ def handle_message(event):
 
     # Di bawah ini bagian logika percakapan pengguna
     # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=user_msg))
+    if user_msg == 'cat image':
+        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
+        url = 'https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_960_720.png'
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
+        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
+    if user_msg == 'elephant image': 
+        #url = 'https://bryanahusna-first-line-bot.herokuapp.com/statics/cat-cartoon.jpg' #url = request.url_root + 'statics/cat-cartoon.jpg'
+        url = 'https://cdn.pixabay.com/photo/2018/11/22/18/17/elephant-3832516_1280.jpg'
+        #line_bot_api.reply_message(event.reply_token, TextSendMessage(text=url))
+        line_bot_api.reply_message(event.reply_token, ImageSendMessage(url, url))
+
     if 'hai' in user_msg.lower() or 'halo' in user_msg.lower() or 'hello' in user_msg.lower():
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Halo, '+ user_profile.display_name+ '! Di sini Kirana. Apa yang bisa aku bantu untukmu'))
     if 'stress' in user_msg.lower() or 'stres' in user_msg.lower():
@@ -154,7 +143,9 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Iya gapapa kok, wajar muncul ketakutan di dalam dirimu. Sekarang tenangin diri kamu dulu ya, mungkin artikel ini bisa membantu \nhttps://www.sehatq.com/artikel/mengenal-alasan-di-balik-rasa-takut-pada-manusia'))
     if 'capek' in user_msg.lower() or 'lelah' in user_msg.lower() : 
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text='Rehat dulu yuk dari semuanya. Istirahatkan pikiran, mental, dan fisikmu supaya kamu bisa berenergi kembali. Ini ada artikel buat kamu, semoga membantu ya! \nhttps://www.hipwee.com/tag/capek/'))
-    
+    else:
+        message = TextSendMessage(text=msg)
+        line_bot_api.reply_message(event.reply_token, message)
     return
 
 
