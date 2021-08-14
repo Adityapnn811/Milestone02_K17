@@ -166,11 +166,18 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
+    
     # Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
             CarouselColumn(text='Info kesehatan mental hari ini', title='Info Kesehatan Mental', actions=[
-                URIAction(label='Baca infonya di sini!', uri='https://www.liputan6.com/tag/kesehatan-mental?type=text&page=1'),
+                URIAction(label='Baca infonya di sini!', uri='https://www.alodokter.com/cari-tahu-informasi-seputar-kesehatan-mental-di-sini'),
+            ]),
+            CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
+                MessageAction(label='Motivate me!', text='Motivate me!')
+            ]),
+            CarouselColumn(text='Motivasi-in kamu', title='Ngobrol dengan Admin!', actions=[
+                MessageAction(label='Motivate me!', text='Motivate me!')
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text='Motivate me!')
