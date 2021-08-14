@@ -7,4 +7,4 @@ def Random_Motivasi():
     return mot[random.randint(0,len(mot)-1)]
 test = 10
 for i in range(test):
-    print(Random_Motivasi())
+    print(type(Random_Motivasi()))
