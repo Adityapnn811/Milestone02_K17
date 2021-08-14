@@ -231,7 +231,7 @@ def handle_message(event):
     elif user_msg == "Bot Help":
         # ../helpText.txt itu file diluar folder namanya helpText.txt
         # kalau mau ganti teks help nya tinggal ganti di .txt nya
-        reply_msg = f = open("../helpText.txt").read()
+        reply_msg = open("../helpText.txt").read()
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
