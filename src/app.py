@@ -176,11 +176,8 @@ def handle_message(event):
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text='Motivate me!')
             ]),
-            CarouselColumn(text='Motivasi-in kamu', title='Ngobrol dengan Admin!', actions=[
-                MessageAction(label='Motivate me!', text='Motivate me!')
-            ]),
-            CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text='Motivate me!')
+            CarouselColumn(text='Admin siap membantu kamu!', title='Ngobrol dengan Admin!', actions=[
+                MessageAction(label='Klik untuk ngobrol dengan admin', text='mode admin')
             ]),
         ])
         template_message = TemplateSendMessage(
