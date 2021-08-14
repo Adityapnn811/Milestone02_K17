@@ -171,7 +171,7 @@ def handle_message(event):
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
             CarouselColumn(text='Info kesehatan mental hari ini', title='Info Kesehatan Mental', actions=[
-                URIAction(label='Baca infonya di sini!', uri='https://www.alodokter.com/cari-tahu-informasi-seputar-kesehatan-mental-di-sini'),
+                URIAction(label='Baca infonya di sini!', uri='https://www.alodokter.com/cari-tahu-informasi-seputar-kesehatan-mental-di-sini')
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text='Motivate me!')
@@ -181,7 +181,7 @@ def handle_message(event):
             ]),
         ])
         template_message = TemplateSendMessage(
-            alt_text='Info Bot', template=carousel_template)
+            alt_text='Fitur Bot', template=carousel_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
     # Di bawah ini bagian logika percakapan pengguna
