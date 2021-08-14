@@ -28,6 +28,15 @@ psql_password = '614e04f0ec7d6a687c0b4e8c6a9941391d70349037ac3b1384149752bd7eeac
 psql_uri = 'postgres://aaqgmutpyfxgmx:614e04f0ec7d6a687c0b4e8c6a9941391d70349037ac3b1384149752bd7eeacd@ec2-54-196-65-186.compute-1.amazonaws.com:5432/d12jneq73g7u2'
 psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
 
+import random
+
+def Random_Motivasi():
+    f_mot = open("Motivasi.csv", "r")
+    lines = f_mot.readlines()
+    f_mot.close()
+    mot = [line.replace("\n", "") for line in lines]
+    return mot[random.randint(0,len(mot)-1)]
+
 if __name__ == '__main__':
     psql_conn = psycopg2.connect(host=psql_host,
                                  database=psql_database,
