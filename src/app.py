@@ -161,7 +161,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
-    var = "bener"
+    var = Random_Motivasi()
     if 'carousel' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
             CarouselColumn(image_url='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
