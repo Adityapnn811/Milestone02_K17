@@ -176,7 +176,7 @@ def handle_message(event):
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja'),
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text=Random_Motivasi())
+                MessageAction(label='Motivate me!', text='halo')
             ]),
         ])
         template_message = TemplateSendMessage(
