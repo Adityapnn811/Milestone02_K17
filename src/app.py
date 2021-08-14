@@ -171,15 +171,18 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
-    
+
 # Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(thumbnailImageUrl='https://raw.githubusercontent.com/aldwinhs/isigambartes/main/wheat-6536039_1280.jpg', text='Yuk ketahui dirimu!', title='Artikel Kesehatan Mental', actions=[
+            CarouselColumn(text='Yuk ketahui dirimu!', title='Artikel Kesehatan Mental', actions=[
                 URIAction(label='Baca di sini!', uri='https://www.halodoc.com/kesehatan/kesehatan-mental')
             ]),
-            CarouselColumn(thumbnailImageUrl='https://raw.githubusercontent.com/aldwinhs/isigambartes/main/wheat-6536039_1280.jpg',text='Motivasi-in kamu', title='Semangat!', actions=[
+            CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text=Random_Motivasi())
+            ]),
+            CarouselColumn(text='Ngobrol sama admin yu', title='Admin', actions=[
+                MessageAction(label='Kontak Admin', text="mode admin")
             ]),
         ])
         template_message = TemplateSendMessage(
@@ -199,18 +202,18 @@ def handle_message(event):
             reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu \nhttp://grhasia.jogjaprov.go.id/berita/371/manajemen-stress.html \nhttps://www.alodokter.com/ternyata-tidak-sulit-mengatasi-stres  \nhttps://hellosehat.com/mental/stres/cara-unik-menghilangkan-stres/"
             sent_msg = TextSendMessage(text=reply_msg)
         if 'bosan' in user_msg.lower() or 'bosen' in user_msg.lower() or 'jenuh' in user_msg.lower():
-            reply_msg = "Haiiiii, lagi bosan yaa?? Kamu bisa isi waktu luangmu dengan kegiatan yang bermanfaat nih! Contohnya, belajar skill baru ataupun berolahraga. Kamu juga bisa menghibur dirimu sendiri menggunakan media hiburan. Kalau belum cukup, kamu bisa kontak admin kami, yuk! \nhttps://dosenpsikologi.com/cara-menghilangkan-rasa-bosan"            
+            reply_msg = "Haiiiii, lagi bosan yaa?? Kamu bisa isi waktu luangmu dengan kegiatan yang bermanfaat nih! Contohnya, belajar skill baru ataupun berolahraga. Kamu juga bisa menghibur dirimu sendiri menggunakan media hiburan. Kalau belum cukup, kamu bisa kontak admin kami, yuk! \nhttps://dosenpsikologi.com/cara-menghilangkan-rasa-bosan"
             sent_msg = TextSendMessage(text=reply_msg)
         if 'bully' in user_msg.lower() or 'bullying' in user_msg.lower() or 'rundung' in user_msg.lower():
             reply_msg = "Heii, kamu orang yang kuat. Hidup ini memang kejam, memaksamu untuk tumbuh lebih cepat karena keadaan. Its okay, aku percaya kamu bisa bangkit lagi dari semua ini. Semoga artikel ini bisa membantu yaa \nhttps://www.sehatq.com/artikel/trauma-psikologis-bisa-lumpuhkan-kehidupan-ini-cara-menyembuhkannya"
             sent_msg = TextSendMessage(text=reply_msg)
-        if 'anxiety' in user_msg.lower() or 'cemas' in user_msg.lower() or 'gelisah' in user_msg.lower(): 
+        if 'anxiety' in user_msg.lower() or 'cemas' in user_msg.lower() or 'gelisah' in user_msg.lower():
             reply_msg ="Terkadang apa yang kamu cemaskan tidak seburuk kenyataannya kok. Baca ini, yuk! \nhttp://www.p2ptm.kemkes.go.id/artikel-sehat/olah-raga-atasi-gangguan-kecemasan"
             sent_msg = TextSendMessage(text=reply_msg)
-        if 'takut' in user_msg.lower() : 
+        if 'takut' in user_msg.lower() :
             reply_msg ="Iya gapapa kok, wajar muncul ketakutan di dalam dirimu. Sekarang tenangin diri kamu dulu ya, mungkin artikel ini bisa membantu \nhttps://www.sehatq.com/artikel/mengenal-alasan-di-balik-rasa-takut-pada-manusia"
             sent_msg = TextSendMessage(text=reply_msg)
-        if 'capek' in user_msg.lower() or 'lelah' in user_msg.lower() : 
+        if 'capek' in user_msg.lower() or 'lelah' in user_msg.lower() :
             reply_msg ="Rehat dulu yuk dari semuanya. Istirahatkan pikiran, mental, dan fisikmu supaya kamu bisa berenergi kembali. Ini ada artikel buat kamu, semoga membantu ya! \nhttps://www.hipwee.com/tag/capek/"
             sent_msg = TextSendMessage(text=reply_msg)
         reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
