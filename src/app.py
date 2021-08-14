@@ -3,7 +3,7 @@ import mode_switch as ms
 import psycopg2     # PostgreSQL
 import pytz         # Untuk waktu dan tanggal
 from flask import Flask, request, abort
-import random
+
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -27,13 +27,6 @@ psql_port = 5432
 psql_password = '614e04f0ec7d6a687c0b4e8c6a9941391d70349037ac3b1384149752bd7eeacd'
 psql_uri = 'postgres://aaqgmutpyfxgmx:614e04f0ec7d6a687c0b4e8c6a9941391d70349037ac3b1384149752bd7eeacd@ec2-54-196-65-186.compute-1.amazonaws.com:5432/d12jneq73g7u2'
 psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
-
-def Random_Motivasi():
-    f_mot = open("Motivasi.csv", "r")
-    lines = f_mot.readlines()
-    f_mot.close()
-    mot = [line.replace("\n", "") for line in lines]
-    return mot[random.randint(0,len(mot)-1)]
 
 if __name__ == '__main__':
     psql_conn = psycopg2.connect(host=psql_host,
@@ -171,11 +164,11 @@ def handle_message(event):
 
     if 'carousel' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
+            CarouselColumn(image_url='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja'),
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text=Random_Motivasi())
+                MessageAction(label='Motivate me!', text='Kamu keren banget!')
             ]),
         ])
         template_message = TemplateSendMessage(
