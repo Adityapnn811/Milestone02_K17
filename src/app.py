@@ -176,8 +176,8 @@ def handle_message(event):
     # Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(thumbnailImageUrl='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg/240', text='Baca artikel tentang kesehatan mental sekarang!', title='Artikel Kesehatan Mental', actions=[
-                URIAction(label='Baca artikel di sini!', uri='https://www.liputan6.com/health/read/4626026/5-aplikasi-virtual-untuk-atasi-stres-dan-kesehatan-mental-saat-pandemi-covid-19')
+            CarouselColumn(thumbnailImageUrl='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg/240', text='Artikel membantu kamu!', title='Artikel Kesehatan Mental', actions=[
+                URIAction(label='Baca artikel di sini!', uri='https://www.halodoc.com/kesehatan/kesehatan-mental')
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text=Random_Motivasi())
