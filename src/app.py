@@ -172,10 +172,10 @@ def handle_message(event):
 
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(thumbnailImageUrl='https://cdn.discordapp.com/attachments/873574936252411915/876019234151477299/wheat-6536039_1280.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
+            CarouselColumn(thumbnailImageUrl='https://raw.githubusercontent.com/aldwinhs/isigambartes/main/wheat-6536039_1280.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja')
             ]),
-            CarouselColumn(thumbnailImageUrl='https://cdn.discordapp.com/attachments/873574936252411915/876019234151477299/wheat-6536039_1280.jpg',text='Motivasi-in kamu', title='Semangat!', actions=[
+            CarouselColumn(thumbnailImageUrl='https://raw.githubusercontent.com/aldwinhs/isigambartes/main/wheat-6536039_1280.jpg',text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text=Random_Motivasi())
             ]),
         ])
