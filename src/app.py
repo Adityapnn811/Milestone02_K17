@@ -170,13 +170,14 @@ def handle_message(event):
         psql_conn.commit()
         return
 
+    Motivasi = Random_Motivasi
     if 'carousel' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
             CarouselColumn(image_url='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja'),
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text='halo')
+                MessageAction(label='Motivate me!', text=Motivasi)
             ]),
         ])
         template_message = TemplateSendMessage(
