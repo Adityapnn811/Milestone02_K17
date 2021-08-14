@@ -14,6 +14,7 @@ from linebot.exceptions import (
 from linebot.models import *
 from datetime import datetime
 from checker import *
+import random
 
 app = Flask(__name__)
 
@@ -28,6 +29,12 @@ psql_port = 5432
 psql_password = '614e04f0ec7d6a687c0b4e8c6a9941391d70349037ac3b1384149752bd7eeacd'
 psql_uri = 'postgres://aaqgmutpyfxgmx:614e04f0ec7d6a687c0b4e8c6a9941391d70349037ac3b1384149752bd7eeacd@ec2-54-196-65-186.compute-1.amazonaws.com:5432/d12jneq73g7u2'
 psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
+
+# Buat fungsi random
+def Random_Motivasi():
+    random.seed(datetime.now())
+    mot = ["Bisaa gais", "kamu di hati", "i love Bryan", "We love you"]
+    return mot[random.randint(0,len(mot)-1)]
 
 if __name__ == '__main__':
     psql_conn = psycopg2.connect(host=psql_host,
@@ -164,26 +171,27 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
-    # Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
+    
+# Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(text='Info kesehatan mental hari ini', title='Info Kesehatan Mental', actions=[
-                URIAction(label='Baca infonya di sini!', uri='https://www.liputan6.com/tag/kesehatan-mental?type=text&page=1'),
+            CarouselColumn(thumbnailImageUrl='https://raw.githubusercontent.com/aldwinhs/isigambartes/main/wheat-6536039_1280.jpg', text='Yuk ketahui dirimu!', title='Artikel Kesehatan Mental', actions=[
+                URIAction(label='Baca di sini!', uri='https://www.halodoc.com/kesehatan/kesehatan-mental')
             ]),
-            CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text='Motivate me!')
+            CarouselColumn(thumbnailImageUrl='https://raw.githubusercontent.com/aldwinhs/isigambartes/main/wheat-6536039_1280.jpg',text='Motivasi-in kamu', title='Semangat!', actions=[
+                MessageAction(label='Motivate me!', text=Random_Motivasi())
             ]),
         ])
         template_message = TemplateSendMessage(
-            alt_text='Info Bot', template=carousel_template)
+            alt_text='Carousel alt text', template=carousel_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
-    # Di bawah ini bagian logika percakapan pengguna
+# Di bawah ini bagian logika percakapan pengguna
     list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
     list_katakunci = ["stres","stress","bosen","bosan","bully","bullying","rundung","takut","capek","lelah","anxiety","cemas","gelisah", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak","y","g","ya","ga","tak","enggak"]
     if checker(user_msg, list_sapaan):
-        reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu?"
+        reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu? Jika ingin tahu apa yang bisa Kirana lakukan, ketik 'Bot Help'."
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     elif checker(user_msg, list_katakunci):
@@ -224,7 +232,7 @@ def handle_message(event):
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
-        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas. Kalau kamu ingin tahu info, boleh ketik 'info'. "
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas. Kalau kamu ingin tahu info, boleh ketik 'Bot Help'. "
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     return
