@@ -77,6 +77,7 @@ def handle_message(event):
     user_msg = event.message.text.lower()
     nama = user_profile.display_name
 
+    # Fitur mode admin
     psql_cur.execute("SELECT * FROM dilayani_admin WHERE id_user=%s;", (user_id,))
     hasil_dilayani = psql_cur.fetchone()
     if hasil_dilayani:
@@ -163,24 +164,21 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
-
-    if 'image_carousel' in user_msg.lower():
-        image_carousel_template = ImageCarouselTemplate(columns=[
-            ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
-                                action=DatetimePickerAction(label='datetime',
-                                                            data='datetime_postback',
-                                                            mode='datetime')),
-            ImageCarouselColumn(image_url='https://via.placeholder.com/1024x1024',
-                                action=DatetimePickerAction(label='date',
-                                                            data='date_postback',
-                                                            mode='date'))
+    # Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
+    if 'info' in user_msg.lower():
+        carousel_template = CarouselTemplate(columns=[
+            CarouselColumn(text='Info kesehatan mental hari ini', title='Info Kesehatan Mental', actions=[
+                URIAction(label='Baca infonya di sini!', uri='https://www.liputan6.com/tag/kesehatan-mental?type=text&page=1'),
+            ]),
+            CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
+                MessageAction(label='Motivate me!', text='Motivate me!')
+            ]),
         ])
         template_message = TemplateSendMessage(
-            alt_text='ImageCarousel alt text', template=image_carousel_template)
+            alt_text='Info Bot', template=carousel_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
     # Di bawah ini bagian logika percakapan pengguna
-    # Sementara masih echo pesan pengguna, silakan ditambah, dan dihapus saja komentar ini jika sudah
     list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
     list_katakunci = ["stres","stress","bosen","bosan","bully","bullying","rundung","takut","capek","lelah","anxiety","cemas","gelisah", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak","y","g","ya","ga","tak","enggak"]
@@ -210,10 +208,9 @@ def handle_message(event):
         reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
         sent_response = TextSendMessage(text=reply_response)
         line_bot_api.reply_message(event.reply_token, [sent_msg, sent_response])
-
     elif checker(user_msg, list_response):
         if "iya" in user_msg or "ya" in user_msg or "y" in user_msg:
-            reply_msg = "Terima kasih, semoga hidup kamu membaik ya"
+            reply_msg = "Terima kasih, semoga hidup kamu membaik ya :D"
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
         else:
@@ -221,7 +218,7 @@ def handle_message(event):
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
-        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas"
+        reply_msg = "Maaf, aku kurang paham nih sama apa yang kamu katakan. Mungkin bisa diperjelas. Kalau kamu ingin tahu info, boleh ketik 'info'. "
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
 
