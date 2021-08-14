@@ -230,7 +230,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, sent_msg)
     elif user_msg == "bot help":
         reply_msg = """
- ▁ ▂ ▄ ▅ ▆ ▇ █ Fitur-Fitur Kirana █ ▇ ▆ ▅ ▄ ▂ ▁
+ ▁ ▄ ▆ █ Fitur-Fitur Kirana █ ▆ ▄ ▁
 
 Pengguna dapat berbicara langsung ke bot mengenai masalah-masalah yang ada, Bot akan menjawab dengan solusi-solusi singkat yang dianggap berguna bagi Pengguna.
 
