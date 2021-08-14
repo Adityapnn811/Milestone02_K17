@@ -3,6 +3,7 @@ import mode_switch as ms
 import psycopg2     # PostgreSQL
 import pytz         # Untuk waktu dan tanggal
 from flask import Flask, request, abort
+from datetime import datetime
 
 
 from linebot import (
@@ -31,6 +32,7 @@ psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
 import random
 
 def Random_Motivasi():
+    random.seed(datetime.now())
     mot = ["Bisaa gais", "kamu di hati", "i love Bryan", "We love you"]
     return mot[random.randint(0,len(mot)-1)]
 

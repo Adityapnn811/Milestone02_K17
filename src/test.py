@@ -1,10 +1,10 @@
 import random
+from datetime import datetime
 def Random_Motivasi():
-    f_mot = open("Motivasi.csv", "r")
-    lines = f_mot.readlines()
-    f_mot.close()
-    mot = [line.replace("\n", "") for line in lines]
+    random.seed(datetime.now())
+    mot = ["Bisaa gais", "kamu di hati", "i love Bryan", "We love you"]
     return mot[random.randint(0,len(mot)-1)]
 test = 10
 for i in range(test):
     print(Random_Motivasi())
+    wait(10)
