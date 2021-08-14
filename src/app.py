@@ -31,10 +31,7 @@ psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
 import random
 
 def Random_Motivasi():
-    f_mot = open("Motivasi.csv", "r")
-    lines = f_mot.readlines()
-    f_mot.close()
-    mot = [line.replace("\n", "") for line in lines]
+    mot = ["Bisaa gais", "kamu di hati", "i love Bryan", "We love you"]
     return mot[random.randint(0,len(mot)-1)]
 
 if __name__ == '__main__':
@@ -170,14 +167,14 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, [TextSendMessage(text="Mohon bersabar, Admin sedang menghubungi pengguna lain"), TextSendMessage(text="Kamu dimasukkan ke antrean Admin. Untuk tidak jadi/batal, ketik \"batal admin\"")])
         psql_conn.commit()
         return
-    var = Random_Motivasi()
+
     if 'carousel' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
             CarouselColumn(image_url='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja')
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text=var)
+                MessageAction(label='Motivate me!', text=Random_Motivasi())
             ]),
         ])
         template_message = TemplateSendMessage(
