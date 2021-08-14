@@ -172,10 +172,10 @@ def handle_message(event):
 
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(thumbnailImageUrl='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg/240', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
+            CarouselColumn(thumbnailImageUrl='https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_1280.png', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
                 URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja')
             ]),
-            CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
+            CarouselColumn(thumbnailImageUrl='https://cdn.pixabay.com/photo/2021/06/27/14/32/raspberry-6368999_1280.png',text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text=Random_Motivasi())
             ]),
         ])
