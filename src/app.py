@@ -176,18 +176,15 @@ def handle_message(event):
     # Fitur carousel info dari bot dan motivasiin pengguna, nanti bisa ditambahin carousel mode bot sama admin
     if 'info' in user_msg.lower():
         carousel_template = CarouselTemplate(columns=[
-            CarouselColumn(thumbnailImageUrl='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg/240', text='Info kesehatan mental hari ini', title='Info Kesehatan Mental', actions=[
-                URIAction(label='Baca infonya di sini!!', uri='https://www.alodokter.com/cari-tahu-informasi-seputar-kesehatan-mental-di-sini')
+            CarouselColumn(thumbnailImageUrl='https://img.okezone.com/content/2020/12/19/408/2330718/menikmati-pesona-golden-sunrise-dengan-7-puncak-gunung-di-temanggung-FF217tHxnd.jpg/240', text='Cerita hangat hari ini', title='Cerita Hangat', actions=[
+                URIAction(label='Baca cerita di sini!', uri='https://www.indosport.com/basket/20210223/inspiratif-cerita-hangat-hubungan-senior-junior-di-bima-perkasa-jogja')
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
                 MessageAction(label='Motivate me!', text=Random_Motivasi())
             ]),
-            CarouselColumn(text='Admin siap membantu kamu!', title='Ngobrol dengan Admin!', actions=[
-                MessageAction(label='Klik untuk ngobrol dengan admin', text=Random_Motivasi())
-            ]),
         ])
         template_message = TemplateSendMessage(
-            alt_text='Fitur Bot', template=carousel_template)
+            alt_text='Carousel alt text', template=carousel_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
     # Di bawah ini bagian logika percakapan pengguna
