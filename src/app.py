@@ -225,10 +225,20 @@ def handle_message(event):
             reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
-    elif user_msg == "Bot Help":
-        # ../helpText.txt itu file diluar folder namanya helpText.txt
-        # kalau mau ganti teks help nya tinggal ganti di .txt nya
-        reply_msg = open("../helpText.txt").read()
+    elif user_msg == "Bot Help":nya
+        reply_msg = """
+ ▁ ▂ ▄ ▅ ▆ ▇ █ Fitur-Fitur Kirana █ ▇ ▆ ▅ ▄ ▂ ▁
+
+Pengguna dapat berbicara langsung ke bot mengenai masalah-masalah yang ada, Bot akan menjawab dengan solusi-solusi singkat yang dianggap berguna bagi Pengguna.
+
+ ░▒▓█ Curhat ke Admin █▓▒░
+
+Selain berbicara dengan Bot, Pengguna juga memiliki pilihan untuk dapat langsung curhat ke Admin dengan mengetik "Mode Admin".
+
+ ░▒▓█ Info Bot █▓▒░
+
+Pengguna dapat mengetahui Info kesehatan mental terkini dan kata-kata motivasi dengan mengetik "Info".
+        """
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
