@@ -1,0 +1,23 @@
+Tutorial Singkat Heroku Postgres
+Sebelum membaca tutorial di bawah, 
+untuk melihat User, Password, Host, Database, Port, caranya:
+1. Buka Aplikasi Heroku
+2. Pilih Tab Resources, click Heroku Postgres (di bawah Add-ons), jendela baru bakal terbuka
+3. Pilih Tab Settings, Click "View Credentials..."
+4. Bisa dilihat User, Password, dll. untuk connect ke database
+
+Karena malas menulis panjang, bisa baca link tutorial ini:
+https://pynative.com/python-postgresql-tutorial/
+
+Intinya:
+1. pip install psycopg2
+2. import psycopg2 ke kode
+3. Buat koneksi baru: koneksi = psycopg2.connect(user dll. yang didapat dari Heroku)
+4. Buat cursor untuk query: cursor = koneksi.cursor()
+5. Jalankan query pakai: cursor.execute("SELECT ...")
+6. Ambil hasilnya dengan: hasil = cursor.fetchone() atau cursor.fetchall()
+7. Variabel hasil di atas akan berisi tuple data yang diinginkan (fetchone()) atau list beberapa tuple data(fetchall())
+8. Variabel hasil bisa diolah seperti tuple atau list biasa
+
+Bingung apa itu query? Bisa belajar SQL dulu di sini:
+https://tutorialzine.com/2016/01/learn-sql-in-20-minutes
