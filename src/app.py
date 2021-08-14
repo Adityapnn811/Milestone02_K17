@@ -186,7 +186,7 @@ def handle_message(event):
             ]),
         ])
         template_message = TemplateSendMessage(
-            alt_text='Carousel alt text', template=carousel_template)
+            alt_text='Fitur Bot', template=carousel_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
 # Di bawah ini bagian logika percakapan pengguna
@@ -228,7 +228,7 @@ def handle_message(event):
             reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
-    elif user_msg == "Bot Help":nya
+    elif user_msg == "Bot Help":
         reply_msg = """
  ▁ ▂ ▄ ▅ ▆ ▇ █ Fitur-Fitur Kirana █ ▇ ▆ ▅ ▄ ▂ ▁
 
