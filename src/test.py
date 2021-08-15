@@ -1,0 +1,1 @@
+print(checker("hi", "aku di bully stres sekali takut dan anxiety sehingga depresi lalu mati"))

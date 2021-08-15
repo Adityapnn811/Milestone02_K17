@@ -199,7 +199,7 @@ def handle_message(event):
         reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu? Jika ingin tahu apa yang bisa Kirana lakukan, ketik 'Bot Help'."
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
-    elif checker(user_msg, list_katakunci):
+    if checker(user_msg, list_katakunci):
         if 'stres' in user_msg.lower():
             reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu \nhttp://grhasia.jogjaprov.go.id/berita/371/manajemen-stress.html \nhttps://www.alodokter.com/ternyata-tidak-sulit-mengatasi-stres  \nhttps://hellosehat.com/mental/stres/cara-unik-menghilangkan-stres/"
             sent_msg = TextSendMessage(text=reply_msg)
@@ -225,7 +225,7 @@ def handle_message(event):
             reply_msg ="Itu hal umum kok, sangat wajar terjadi antara manusia satu dengan yang lainnya, gapapa. Masih banyak orang yang menyayangi dan menghargaimu, aku pun bisa menjadi teman untukmu dan mau mendengarkan semua ceritamu. Kamu ngga sendiri kok, tetep semangat ya!"
             sent_msg = TextSendMessage(text=reply_msg)
         if 'mati' in user_msg.lower():
-            reply_msg = "Hey, coba deh kamu renungkan dulu, kamu hidup ke dunia pasti punya makna. Ngga sembarangan orang loh bisa dapet kesempatan untuk menikmati dunia. Inget, itu bukan penyelesaian masalah, bisa jadi malah menambah masalah baru kalau kamu melakukannya. Tenangin diri dulu, relax, hadapi dan sertakan kekuatan alam untuk mendukungmu keluar dari masalah itu. Yuk semangat, aku yakin kamu pasti bisa!"
+            reply_msg = "Hey, coba deh kamu renungkan dulu, kamu hidup ke dunia pasti punya makna. Ngga sembarangan orang loh bisa dapet kesempatan untuk menikmati dunia. Inget, itu bukan penyelesaian masalah, bisa jadi malah menambah masalah baru kalau kamu melakukannya. Tenangin diri dulu, relax, hadapi dan sertakan kekuatan alam untuk mendukungmu keluar dari masalah itu. Yuk semangat, aku yakin kamu pasti bisa!     \nhttps://www.aswata.co.id/id/berita/info-tips/614-agar-selalu-bersyukur-dalam-hidup-dengan-4-cara-sederhana-ini"
             sent_msg = TextSendMessage(text=reply_msg)
         reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
         sent_response = TextSendMessage(text=reply_response)
