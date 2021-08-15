@@ -256,7 +256,7 @@ Pengguna dapat mengetahui Info kesehatan mental terkini dan kata-kata motivasi d
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     elif user_msg == "motivasiin aku!":
-		reply_msg = Random_Motivasi()
+        reply_msg = Random_Motivasi()
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
