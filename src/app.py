@@ -33,7 +33,9 @@ psql_herokucli = 'heroku pg:psql postgresql-trapezoidal-98002 --app kirana-bot'
 # Buat fungsi random
 def Random_Motivasi():
     random.seed(datetime.now())
-    mot = ["Bisaa gais", "kamu di hati", "i love Bryan", "We love you"]
+    mot = ["Kamu keren bangett!", "Progress sekecil apapun tetap progress :D", 
+    "Kamu sudah berhasil melewati detik sebelumnya, kamu hebat :D", 
+    "Kelak kamu akan melihat masa lalu dan tersenyum kamu bisa melewati semua ini ^_^"]
     return mot[random.randint(0,len(mot)-1)]
 
 if __name__ == '__main__':
