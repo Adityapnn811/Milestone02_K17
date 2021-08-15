@@ -228,7 +228,7 @@ def handle_message(event):
             reply_msg = "Maaf ya kalau aku kurang membantu. Ini aku kasih kontak admin yang bisa membantu kamu"
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
-    elif user_msg == "Bot Help":
+    elif user_msg.lower() == "bot help":
         reply_msg = """
  ▁ ▂ ▄ ▅ ▆ ▇ █ Fitur-Fitur Kirana █ ▇ ▆ ▅ ▄ ▂ ▁
 
