@@ -35,7 +35,11 @@ def Random_Motivasi():
     random.seed(datetime.now())
     mot = ["Kamu keren bangett!", "Progress sekecil apapun tetap progress :D", 
     "Kamu sudah berhasil melewati detik sebelumnya, kamu hebat :D", 
-    "Kelak kamu akan melihat masa lalu dan tersenyum kamu bisa melewati semua ini ^_^"]
+    "Kelak kamu akan melihat masa lalu dan tersenyum kamu bisa melewati semua ini ^_^",
+    "Jangan biarkan opini orang lain menenggelamkan suara dari dalam diri Anda",
+    "Mulai setiap harimu dengan pikiran positif dan hati yang bersyukur",
+    "Ingat, ini hanya hari yang buruk, bukan kehidupan yang buruk",
+    "Jangan Membandingkan Diri Anda dengan Orang Lain. Bandingkan Diri Anda dengan Pribadi yang Kemarin"]
     return mot[random.randint(0,len(mot)-1)]
 
 if __name__ == '__main__':
@@ -195,43 +199,54 @@ def handle_message(event):
     list_sapaan = ["halo", "hallo", "hi", "hai", "hello"]
     list_katakunci = ["stres","stress","bosen","bosan","bully","bullying","rundung","takut","capek","lelah","anxiety","cemas","gelisah", "lonely", "sepi", "depresi", "bundir", "bunuh"]
     list_response = ["iya", "tidak","y","g","ya","ga","tak","enggak"]
+    list_reply_from_bot = []
     if checker(user_msg, list_sapaan):
         reply_msg = f"Halo, {nama}! Aku Kirana! Apakah ada yang bisa Kirana bantu untuk kamu? Jika ingin tahu apa yang bisa Kirana lakukan, ketik 'Bot Help'."
         sent_msg = TextSendMessage(text=reply_msg)
-        line_bot_api.reply_message(event.reply_token, sent_msg)
+        list_reply_from_bot.append(sent_msg)
     if checker(user_msg, list_katakunci):
         if 'stres' in user_msg.lower():
             reply_msg = "Wahh, kamu lagi banyak kerjaan yah? Atau mungkin lagi banyak pikiran? Semangat terus yaaa. Aku punya artikel yang membantu kamu \nhttp://grhasia.jogjaprov.go.id/berita/371/manajemen-stress.html \nhttps://www.alodokter.com/ternyata-tidak-sulit-mengatasi-stres  \nhttps://hellosehat.com/mental/stres/cara-unik-menghilangkan-stres/"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if ('bosan' in user_msg.lower()) or ('bosen' in user_msg.lower()) or ('jenuh' in user_msg.lower()):
             reply_msg = "Haiiiii, lagi bosan yaa?? Kamu bisa isi waktu luangmu dengan kegiatan yang bermanfaat nih! Contohnya, belajar skill baru ataupun berolahraga. Kamu juga bisa menghibur dirimu sendiri menggunakan media hiburan. Kalau belum cukup, kamu bisa kontak admin kami, yuk! \nhttps://dosenpsikologi.com/cara-menghilangkan-rasa-bosan"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if ('bully' in user_msg.lower()) or ('bullying' in user_msg.lower()) or ('rundung' in user_msg.lower()):
             reply_msg = "Heii, kamu orang yang kuat. Hidup ini memang kejam, memaksamu untuk tumbuh lebih cepat karena keadaan. Its okay, aku percaya kamu bisa bangkit lagi dari semua ini. Semoga artikel ini bisa membantu yaa \nhttps://www.sehatq.com/artikel/trauma-psikologis-bisa-lumpuhkan-kehidupan-ini-cara-menyembuhkannya"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if ('anxiety' in user_msg.lower()) or ('cemas' in user_msg.lower()) or ('gelisah' in user_msg.lower()):
             reply_msg ="Terkadang apa yang kamu cemaskan tidak seburuk kenyataannya kok. Baca ini, yuk! \nhttp://www.p2ptm.kemkes.go.id/artikel-sehat/olah-raga-atasi-gangguan-kecemasan"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if ('takut' in user_msg.lower()) :
             reply_msg ="Iya gapapa kok, wajar muncul ketakutan di dalam dirimu. Sekarang tenangin diri kamu dulu ya, mungkin artikel ini bisa membantu \nhttps://www.sehatq.com/artikel/mengenal-alasan-di-balik-rasa-takut-pada-manusia"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if ('capek' in user_msg.lower()) or ('lelah' in user_msg.lower()) :
             reply_msg ="Rehat dulu yuk dari semuanya. Istirahatkan pikiran, mental, dan fisikmu supaya kamu bisa berenergi kembali. Ini ada artikel buat kamu, semoga membantu ya! \nhttps://www.hipwee.com/tag/capek/"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if 'depresi' in user_msg.lower() :
             reply_msg ="Tenang ya, mungkin kamu perlu bantuan yang ahli di bidang ini. Kami bisa bantu carikan psikolog/psikiater nih buatmu. Tenang aja ya, mereka pasti akan berusaha membuatmu jadi lebih baik dengan analisis kondisimu secara tepat. Hubungi admin kami untuk lebih lanjutnya ya."
             sent_msg = TextSendMessage(text=reply_msg)
-        if 'benci' in user_msg.lower() or 'membenci' in user_msg.lower() or 'dibenci' in user_msg.lower() :
+            list_reply_from_bot.append(sent_msg)
+        if ('benci' in user_msg.lower()) or ('membenci' in user_msg.lower()) or ('dibenci' in user_msg.lower()) :
             reply_msg ="Itu hal umum kok, sangat wajar terjadi antara manusia satu dengan yang lainnya, gapapa. Masih banyak orang yang menyayangi dan menghargaimu, aku pun bisa menjadi teman untukmu dan mau mendengarkan semua ceritamu. Kamu ngga sendiri kok, tetep semangat ya!"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         if 'mati' in user_msg.lower():
             reply_msg = "Hey, coba deh kamu renungkan dulu, kamu hidup ke dunia pasti punya makna. Ngga sembarangan orang loh bisa dapet kesempatan untuk menikmati dunia. Inget, itu bukan penyelesaian masalah, bisa jadi malah menambah masalah baru kalau kamu melakukannya. Tenangin diri dulu, relax, hadapi dan sertakan kekuatan alam untuk mendukungmu keluar dari masalah itu. Yuk semangat, aku yakin kamu pasti bisa!     \nhttps://www.aswata.co.id/id/berita/info-tips/614-agar-selalu-bersyukur-dalam-hidup-dengan-4-cara-sederhana-ini"
             sent_msg = TextSendMessage(text=reply_msg)
+            list_reply_from_bot.append(sent_msg)
         reply_response = "Apakah jawabanku membantu kamu? Ketik 'iya' jika membantu"
         sent_response = TextSendMessage(text=reply_response)
-        line_bot_api.reply_message(event.reply_token, [sent_msg, sent_response])
+        list_reply_from_bot.append(sent_response)
+        line_bot_api.reply_message(event.reply_token, list_reply_from_bot)
     elif checker(user_msg, list_response):
-        if "iya" in user_msg or "ya" in user_msg or "y" in user_msg:
+        if ("iya" in user_msg) or ("ya" in user_msg) or ("y" in user_msg) or ("iyaa" in user_msg):
             reply_msg = "Terima kasih, semoga hidup kamu membaik ya :D"
             sent_msg = TextSendMessage(text=reply_msg)
             line_bot_api.reply_message(event.reply_token, sent_msg)
