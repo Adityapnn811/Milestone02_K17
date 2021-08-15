@@ -181,7 +181,7 @@ def handle_message(event):
                 URIAction(label='Baca di sini!', uri='https://www.halodoc.com/kesehatan/kesehatan-mental')
             ]),
             CarouselColumn(text='Motivasi-in kamu', title='Semangat!', actions=[
-                MessageAction(label='Motivate me!', text=Random_Motivasi())
+                MessageAction(label='Motivate me!', text='Motivasiin Aku!')
             ]),
             CarouselColumn(text='Ngobrol sama admin yu', title='Admin', actions=[
                 MessageAction(label='Kontak Admin', text="mode admin")
@@ -253,6 +253,10 @@ Selain berbicara dengan Bot, Pengguna juga memiliki pilihan untuk dapat langsung
 
 Pengguna dapat mengetahui Info kesehatan mental terkini dan kata-kata motivasi dengan mengetik "Info".
         """
+        sent_msg = TextSendMessage(text=reply_msg)
+        line_bot_api.reply_message(event.reply_token, sent_msg)
+    elif user_msg == "motivasiin aku!":
+		reply_msg = Random_Motivasi()
         sent_msg = TextSendMessage(text=reply_msg)
         line_bot_api.reply_message(event.reply_token, sent_msg)
     else:
