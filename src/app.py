@@ -236,7 +236,7 @@ def handle_message(event):
         if ('benci' in user_msg.lower()) or ('membenci' in user_msg.lower()) or ('dibenci' in user_msg.lower()) :
             reply_msg ="Itu hal umum kok, sangat wajar terjadi antara manusia satu dengan yang lainnya, gapapa. Masih banyak orang yang menyayangi dan menghargaimu, aku pun bisa menjadi teman untukmu dan mau mendengarkan semua ceritamu. Kamu ngga sendiri kok, tetep semangat ya!"
             sent_msg = TextSendMessage(text=reply_msg)
-            list_reply_from_bot.append(sent_msg)
+            list_reply_from_bot.append(sent_msg) 
         if 'mati' in user_msg.lower():
             reply_msg = "Hey, coba deh kamu renungkan dulu, kamu hidup ke dunia pasti punya makna. Ngga sembarangan orang loh bisa dapet kesempatan untuk menikmati dunia. Inget, itu bukan penyelesaian masalah, bisa jadi malah menambah masalah baru kalau kamu melakukannya. Tenangin diri dulu, relax, hadapi dan sertakan kekuatan alam untuk mendukungmu keluar dari masalah itu. Yuk semangat, aku yakin kamu pasti bisa!     \nhttps://www.aswata.co.id/id/berita/info-tips/614-agar-selalu-bersyukur-dalam-hidup-dengan-4-cara-sederhana-ini"
             sent_msg = TextSendMessage(text=reply_msg)
