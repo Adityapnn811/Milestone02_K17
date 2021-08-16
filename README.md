@@ -13,6 +13,11 @@ Muhammad Alif Putra Yasa            (16520301), Logika Percakapan Bot</br>
 Ng Kyle                             (16520319), Fitur Carousel</br>
 Tri Sulton Adila                    (16520492), Membuat Logo</br>
 
+## Tutorial Menggunakan Kirana-Bot
+1. Tambah Kirana Bot melalui Line dengan id : @889oiexx
+2. Untuk mengetahui command pada bot kirimkan pesan "Bot Help"
+3. Silahkan curhat kepada bot dan bot akan membalas sesuai kata kunci
+
 ## Command untuk BOT
 User biasa </br>
 "mode admin"	: menghubungi admin </br>
