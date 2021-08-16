@@ -7,7 +7,7 @@ Aldwin Hardi Swastia                (16520249), Logika Percakapan Bot</br>
 Bryan Amirul Husna                  (16520172), Fitur Mode Admin</br>
 Dewa Ayu Mutiara Kirana Praba Dewi  (16520485), Pemateri Konten Bot</br>
 Fitrah Ramadhani Nugroho            (16520207), Logika Percakapan Bot</br>
-I Gede Arya Raditya Parameswara     (16520073), README</br>
+I Gede Arya Raditya Parameswara     (16520073), README & Bug Fixing</br>
 Khafifanisa                         (16520152), Pemateri Konten Bot</br>
 Muhammad Alif Putra Yasa            (16520301), Logika Percakapan Bot</br>
 Ng Kyle                             (16520319), Fitur Carousel</br>
